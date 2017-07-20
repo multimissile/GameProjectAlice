@@ -1,0 +1,29 @@
+81	80	Idle
+21	100	Jump_Fall
+4	103	Jump_Land
+15	117	Run_Fall
+6	122	Run_Land
+5	126	Run_Start
+6	131	Jump_Start
+25	155	Run
+5	159	RunBreak_L
+5	163	RunBreak_R
+22	184	TurnLeft_NoRotation
+20	203	TurnRight_NoRotation
+33	235	Alice_Walk
+
+13	247	attack1
+20	266	attack1f
+18	283	attack2
+20	302	attack2f
+45	346	attack3
+21	366	cBackward
+19	384	cForward
+61	444	cIdle
+21	464	cStarfL
+21	484	cStarfR
+
+80
+100
+103
+117
