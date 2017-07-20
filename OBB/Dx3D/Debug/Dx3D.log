@@ -1,5 +1,0 @@
-﻿  cZealot.cpp
-f:\svn\projectalice\gameprojectalice\obb\dx3d\czealot.cpp(23): warning C4316: 'cSkinnedMesh': 힙에 할당된 개체가 16에 맞추어져 있지 않을 수도 있습니다
-f:\svn\projectalice\gameprojectalice\obb\dx3d\czealot.cpp(28): warning C4316: 'cOBB': 힙에 할당된 개체가 16에 맞추어져 있지 않을 수도 있습니다
-  Dx3D.vcxproj -> F:\svn\ProjectAlice\GameProjectAlice\OBB\Debug\Dx3D_OBB01.exe
-  Dx3D.vcxproj -> F:\svn\ProjectAlice\GameProjectAlice\OBB\Debug\Dx3D_OBB01.pdb (Full PDB)
