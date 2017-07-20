@@ -19,7 +19,8 @@ cZealot::~cZealot(void)
 
 void cZealot::Setup()
 {
-	m_pSkinnedMesh = new cSkinnedMesh("Zealot/", "zealot.X");
+	//m_pSkinnedMesh = new cSkinnedMesh("Zealot/", "zealot.X");
+	m_pSkinnedMesh = new cSkinnedMesh("character/alice/", "alice.X");
 	m_pSkinnedMesh->SetRandomTrackPosition();
 	
 	/// >> : OBB
