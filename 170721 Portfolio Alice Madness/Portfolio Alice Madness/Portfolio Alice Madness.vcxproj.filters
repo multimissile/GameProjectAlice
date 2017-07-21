@@ -112,9 +112,6 @@
     <ClInclude Include="cCameraTest.h">
       <Filter>TestCamera</Filter>
     </ClInclude>
-    <ClInclude Include="cCameraTestCamera.h">
-      <Filter>TestCamera</Filter>
-    </ClInclude>
     <ClInclude Include="cCamera.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -184,9 +181,6 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="cCameraTest.cpp">
-      <Filter>TestCamera</Filter>
-    </ClCompile>
-    <ClCompile Include="cCameraTestCamera.cpp">
       <Filter>TestCamera</Filter>
     </ClCompile>
     <ClCompile Include="cCamera.cpp">

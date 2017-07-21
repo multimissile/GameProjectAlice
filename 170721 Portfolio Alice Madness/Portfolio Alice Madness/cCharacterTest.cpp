@@ -5,9 +5,9 @@
 cCharacterTest::cCharacterTest()
 	:m_pSkinnedMesh(NULL)
 	,m_vPosition(0.f,0.f,0.f)
-	, state(CHARACTER_IDLE)
+	, state(CHARACTER_Idle)
 {
-
+	
 }
 
 cCharacterTest::~cCharacterTest()
@@ -17,7 +17,8 @@ cCharacterTest::~cCharacterTest()
 
 void cCharacterTest::Setup()
 {
-	m_pSkinnedMesh = new cSkinnedMesh("TestFolder", "Alice_Test_Scale0.04f_TextureNone_3.X");
+	m_pSkinnedMesh = new cSkinnedMesh("TestFolder", "alice.X");
+	m_pSkinnedMesh->SetAnimationIndexBlend(state);
 }
 
 void cCharacterTest::Update()
@@ -27,9 +28,9 @@ void cCharacterTest::Update()
 	if (g_pKeyManager->IsStayKeyDown('W'))
 	{
 
-		if (state != CHARACTER_ALICE_WALK)
+		if (state != CHARACTER_Alice_Walk)
 		{
-			state = CHARACTER_ALICE_WALK;
+			state = CHARACTER_Alice_Walk;
 			m_pSkinnedMesh->SetAnimationIndexBlend(state);
 		}
 		m_vPosition += D3DXVECTOR3(0, 0, -1) * 0.09f;
@@ -38,19 +39,19 @@ void cCharacterTest::Update()
 	else if (g_pKeyManager->IsStayKeyDown('S'))
 	{
 
-		if (state != CHARACTER_ALICE_WALK)
+		if (state != CHARACTER_Alice_Walk)
 		{
-			state = CHARACTER_ALICE_WALK;
+			state = CHARACTER_Alice_Walk;
 			m_pSkinnedMesh->SetAnimationIndexBlend(state);
 		}	
 
 		m_vPosition += D3DXVECTOR3(0, 0, +1) * 0.09f;
 	}
 
-	else if(state != CHARACTER_IDLE)
+	else if(state != CHARACTER_Idle)
 	{
 		{
-			state = CHARACTER_IDLE;
+			state = CHARACTER_Idle;
 			//트랙포지션이 0 부터 시작해야하므로 SetAnimationIndexBlend 를 사용하여 트랙포지션을 0으로 만듦과 동시에
 			// 이전 애니메이션에서 현재애니메이션으로 넘어오는것이 어색하지 않도록 blend
 			m_pSkinnedMesh->SetAnimationIndexBlend(state);
@@ -75,10 +76,14 @@ void cCharacterTest::Update()
 
 void cCharacterTest::Render()
 {
-	D3DXMATRIX matWorld;
-	D3DXMatrixTranslation(&matWorld, m_vPosition.x, m_vPosition.y, m_vPosition.z);
+	D3DXMATRIX matS, matR;
+	D3DXMatrixScaling(&matS, 0.04f, 0.04f, 0.04f);
 
-	m_pSkinnedMesh->SetTransform((D3DXMATRIXA16*)&matWorld);
+
+
+	D3DXMatrixTranslation(&matR, m_vPosition.x, m_vPosition.y, m_vPosition.z);
+
+	m_pSkinnedMesh->SetTransform((D3DXMATRIXA16*)&(matS * matR));
 	m_pSkinnedMesh->UpdateAndRender();
 
 }

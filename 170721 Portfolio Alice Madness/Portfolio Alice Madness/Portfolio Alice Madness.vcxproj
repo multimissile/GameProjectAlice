@@ -150,7 +150,6 @@
     <ClInclude Include="cBox.h" />
     <ClInclude Include="cCamera.h" />
     <ClInclude Include="cCameraTest.h" />
-    <ClInclude Include="cCameraTestCamera.h" />
     <ClInclude Include="cCharacter.h" />
     <ClInclude Include="cCharacterTest.h" />
     <ClInclude Include="cController.h" />
@@ -178,7 +177,6 @@
     <ClCompile Include="cBox.cpp" />
     <ClCompile Include="cCamera.cpp" />
     <ClCompile Include="cCameraTest.cpp" />
-    <ClCompile Include="cCameraTestCamera.cpp" />
     <ClCompile Include="cCharacter.cpp" />
     <ClCompile Include="cCharacterTest.cpp" />
     <ClCompile Include="cController.cpp" />
