@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Device">
+      <UniqueIdentifier>{309eefdb-a655-4196-87bc-ca3e11d77819}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{d5b6903c-8386-488b-9027-aa20ff896d9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{5b6187ee-9a99-4e7a-9fda-3dec5a799316}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Grid">
+      <UniqueIdentifier>{b383ccba-29a8-482d-8d55-dded54c71d78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Grid\Pyramid">
+      <UniqueIdentifier>{1abbdd1b-3d47-4d29-a7d2-38667e146500}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\XFile">
+      <UniqueIdentifier>{7cc761c8-0324-4d53-888d-0c723bc6bf69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TestCamera">
+      <UniqueIdentifier>{3ba0bf9c-f8b8-4280-800e-edf915b469f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TestCharacter">
+      <UniqueIdentifier>{7fcfd0ce-918a-469d-a175-8537773d2042}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TestEntry">
+      <UniqueIdentifier>{12cd7252-6bb8-427e-aa67-1da5fa2de807}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TestUI">
+      <UniqueIdentifier>{f1bc5a27-0b4b-4edd-b25c-6c91d8c94f60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\UI">
+      <UniqueIdentifier>{c4cd569a-b070-4117-a591-f144759139ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Config">
+      <UniqueIdentifier>{4733f3a2-952f-4bb2-952d-3e39aec2283b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Config\Character">
+      <UniqueIdentifier>{7c94fee9-7e3b-4505-b61e-a23412ffcba5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Config\Character\Player">
+      <UniqueIdentifier>{93a7e713-8c3f-428d-890c-7834fd1024cb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+    <Text Include="170712- Portfolio Alice Madness.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Portfolio Alice Madness.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Util.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cDeviceManager.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="cMainGame.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="c170720Test2.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cTextureManager.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="cGrid.h">
+      <Filter>Common\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="cPyramid.h">
+      <Filter>Common\Grid\Pyramid</Filter>
+    </ClInclude>
+    <ClInclude Include="cTimeManager.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkinnedMeshManager.h">
+      <Filter>Common\XFile</Filter>
+    </ClInclude>
+    <ClInclude Include="cAllocateHierarchy.h">
+      <Filter>Common\XFile</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkinnedMesh.h">
+      <Filter>Common\XFile</Filter>
+    </ClInclude>
+    <ClInclude Include="cKeyManager.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="cCameraTest.h">
+      <Filter>TestCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="cCameraTestCamera.h">
+      <Filter>TestCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="cCamera.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="cCharacterTest.h">
+      <Filter>TestCharacter</Filter>
+    </ClInclude>
+    <ClInclude Include="cCharacter.h">
+      <Filter>Config\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="cPlayer.h">
+      <Filter>Config\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="cSpriteImage.h">
+      <Filter>Common\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="cController.h">
+      <Filter>Common\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="cUITest.h">
+      <Filter>TestUI</Filter>
+    </ClInclude>
+    <ClInclude Include="cBox.h">
+      <Filter>Common\UI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Util.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cDeviceManager.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="cMainGame.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Portfolio Alice Madness.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="c170720Test2.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cTextureManager.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="cGrid.cpp">
+      <Filter>Common\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="cPyramid.cpp">
+      <Filter>Common\Grid\Pyramid</Filter>
+    </ClCompile>
+    <ClCompile Include="cTimeManager.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkinnedMeshManager.cpp">
+      <Filter>Common\XFile</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkinnedMesh.cpp">
+      <Filter>Common\XFile</Filter>
+    </ClCompile>
+    <ClCompile Include="cAllocateHierarchy.cpp">
+      <Filter>Common\XFile</Filter>
+    </ClCompile>
+    <ClCompile Include="cKeyManager.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="cCameraTest.cpp">
+      <Filter>TestCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="cCameraTestCamera.cpp">
+      <Filter>TestCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="cCamera.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="cCharacterTest.cpp">
+      <Filter>TestCharacter</Filter>
+    </ClCompile>
+    <ClCompile Include="cCharacter.cpp">
+      <Filter>Config\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="cPlayer.cpp">
+      <Filter>Config\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="cSpriteImage.cpp">
+      <Filter>Common\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="cController.cpp">
+      <Filter>Common\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="cUITest.cpp">
+      <Filter>TestUI</Filter>
+    </ClCompile>
+    <ClCompile Include="cBox.cpp">
+      <Filter>Common\UI</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Portfolio Alice Madness.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Alice2.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
