@@ -32,16 +32,16 @@ void cXLoader::Load(const char * szFolder, const char * szFile, MESH_OPTION opti
 
 
 	//xFile에 보관된 메쉬 데이터 읽어들이기
-	D3DXLoadMeshFromX
-	(sFullName.c_str()								//파일명
-		, option				//플래그지정
-		, g_pD3DDevice									//장치
-		, 0											//메쉬 접근 정보 위한(DWORD 배열)
-		, &pMtlBuffer								//메쉬 재질 정보
-		, 0												//D3DXEFFECTINSTANCE구조체 배열 위한 (현재는0)
-		, &nNumMtl									//메쉬 재질 수
-		, &pMesh);
-
+	D3DXLoadMeshFromX(
+		sFullName.c_str(),	//파일명
+		option,				//플래그 지정
+		g_pD3DDevice,		//장치
+		0,					//메쉬 접근 정보 위한 dword배열
+		&pMtlBuffer,		//매쉬 재질 정보
+		0,					//D3DXEFFECTINSTANCE 구조체 배열 위한 (현재는 0)
+		&nNumMtl,			//메쉬 재질 수
+		&pMesh
+	);
 
 
 	if (!pMtlBuffer || !nNumMtl)
