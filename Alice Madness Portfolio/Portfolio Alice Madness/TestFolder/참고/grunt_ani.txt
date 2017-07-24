@@ -1,0 +1,47 @@
+move_attack_1_start	0	25
+move_attack_1_end	25	60
+move_attack_2_start	60	90
+move_attack_2_End	90	150
+
+head_attack		150	190
+stand_attack_1_start	190	215
+stand_attack_1_end	215	250
+stand_attack_2_start	250	280
+stand_attack_2_end	280	340
+
+smash_attack_start	340	366
+smash_attack_end	366	380
+rotation_attack_start	380	410
+rotation_attack_end	410	420
+
+stand_idle		420	480
+damage_H_1		480	530
+damage_H_2		530	580
+
+die_1			580	680
+die_2			680	760
+die_3			760	855
+
+falling			855	871
+spawn_1			871	931
+spawn_2			931	991
+spawn_3			991	1051
+spawn_4			1051	1111
+
+strafe_run_b		1111	1127
+strafe_run_f		1127	1143
+strafe_run_l		1143	1159
+strafe_run_r		1159	1175
+strafe_walk_b		1175	1223
+strafe_walk_f		1223	1271
+strafe_walk_l		1271	1319
+strafe_walk_r		1319	1367
+
+taunt_1			1367	1427
+taunt_2			1427	1487
+taunt_3			1487	1557
+
+warn			1557	1637
+damage_L_1		1637	1659
+damage_L_2		1659	1689
+damage_L_3		1689	1719
