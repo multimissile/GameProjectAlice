@@ -1,4 +1,5 @@
 #pragma once
+#include "cSkinnedMesh.h"
 
 /* 캐릭터들의 노드입니다. */
 

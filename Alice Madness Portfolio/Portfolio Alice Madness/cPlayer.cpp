@@ -2,7 +2,7 @@
 #include "cPlayer.h"
 
 
-/*cPlayer::cPlayer():state(CHARACTER_Idle)
+cPlayer::cPlayer():state(CHARACTER_Idle)
 {
 	SetMesh(NULL);
 	SetvPos(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
@@ -96,5 +96,3 @@ void cPlayer::Render()
 	m_pSkinnedMesh->UpdateAndRender();
 
 }
-
-*/
