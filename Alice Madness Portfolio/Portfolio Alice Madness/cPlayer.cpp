@@ -4,8 +4,9 @@
 
 cPlayer::cPlayer():state(CHARACTER_Idle)
 {
-	SetMesh(NULL);
-	SetvPos(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	m_pSkinnedMesh = NULL;
+	m_vPosition = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_vDirection = D3DXVECTOR3(1.0f, 0.0f, 0.0f);
 }
 
 

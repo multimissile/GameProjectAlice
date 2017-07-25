@@ -50,5 +50,17 @@ public:
 	//inline D3DXVECTOR3 GetCamEye() { return m_vEye; }
 	// GetCamLookAt() { return m_vLookAt; }
 	D3DXMATRIX GetMatCameraWorld();
+
+	//카메라 정보 리턴
+	D3DXVECTOR3 vGetEye() {
+		return m_vEye;
+	}
+	D3DXVECTOR3 m_vLookAt() {
+		return m_vEye;
+	}
+	D3DXVECTOR3 vGetUp() {
+		return m_vUp;
+	}
+
 };
 
