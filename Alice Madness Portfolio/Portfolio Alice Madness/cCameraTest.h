@@ -8,7 +8,6 @@ class cSpriteImage;
 
 
 class cCharacterTest;
-class cCameraTest;
 class cMapTest;
 class cCamera;
 class cMeshGroup;

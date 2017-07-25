@@ -1,4 +1,4 @@
-//#pragma once
+#pragma once
 
 /* 현재는 해당 카메라를 기본으로 사용합니다. */
 

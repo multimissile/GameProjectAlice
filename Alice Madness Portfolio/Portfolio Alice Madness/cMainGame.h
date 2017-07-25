@@ -3,11 +3,10 @@
 /*게임이 실행되는 메인 클래스*/
 class cGrid;
 class cCamera;
-
-class cCameraTest;
-class cEntry;
-
 class cScene;
+//class cCameraTest;
+class cEntry;
+class cWonderLand;
 
 class cMainGame
 {
@@ -22,7 +21,8 @@ private:
 	cCamera* m_pCamera;
 	cGrid* m_pGrid;
 
-	cCameraTest* m_pCameraTest;
+	//cCameraTest* m_pCameraTest;
+	cWonderLand* m_pWonderLand;
 
 	vector<cScene*> m_vecScene;
 	int nCur;

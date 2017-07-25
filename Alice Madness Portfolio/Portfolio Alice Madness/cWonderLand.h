@@ -2,20 +2,24 @@
 
 #include "cScene.h"
 
-class cCharacterTest;
+//class cCharacterTest;
+class cPlayer;
 
 
 class cWonderLand : public cScene		
 {
 
 //1. 캐릭터
+	cPlayer* m_pPlayer;
 //2. 적
 //3. 오브젝트
 //4. 타일		
 //5. 아이템
 //6. 이벤트
 
-	cCharacterTest* m_pCharacterTest;
+	//cCharacterTest* m_pCharacterTest;
+
+
 
 
 
@@ -27,6 +31,11 @@ public:
 	void Setup();
 	void Update();
 	void Render(LPD3DXSPRITE pSprite);
+
+	void Setup(cCamera* pCamera);
+
+	void ControlCamera();
+	void RenderCamera();
 
 };
 

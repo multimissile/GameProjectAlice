@@ -2,16 +2,18 @@
 #include "cMainGame.h"
 #include "cCamera.h"
 #include "cGrid.h"
-#include "cCameraTest.h"
+//#include "cCameraTest.h"
+#include "cWonderLand.h"
 #include "cEntry.h"
 #include "cMain.h"
-#include "cWonderLand.h"
+
 
 cMainGame::cMainGame()
 	:m_pSprite(NULL)
 	,m_pGrid(NULL)
 	,m_pCamera(NULL)
-	,m_pCameraTest(NULL)
+	//,m_pCameraTest(NULL)
+	,m_pWonderLand(NULL)
 {
 }
 
@@ -21,7 +23,8 @@ cMainGame::~cMainGame()
 	SAFE_RELEASE(m_pSprite);
 	SAFE_DELETE(m_pGrid);
 	SAFE_DELETE(m_pCamera);
-	SAFE_DELETE(m_pCameraTest);
+	//SAFE_DELETE(m_pCameraTest);
+
 	for each(auto p  in m_vecScene)
 	{
 		SAFE_DELETE(p);
@@ -51,8 +54,12 @@ void cMainGame::Setup()
 	m_pCamera = new cCamera;
 	m_pCamera->Setup();
 
-	m_pCameraTest = new cCameraTest;
-	m_pCameraTest->Setup(m_pCamera);
+	/*m_pCameraTest = new cCameraTest;
+	m_pCameraTest->Setup(m_pCamera);*/
+
+	m_pWonderLand = new cWonderLand;
+	m_pWonderLand->Setup(m_pCamera);
+
 	m_vecScene.push_back(new cEntry);
 	m_vecScene.back()->Setup();
 	m_vecScene.push_back(new cMain);
@@ -74,7 +81,8 @@ void cMainGame::Update()
 		nCur == m_vecScene.size() - 1 ? nCur = 0 : nCur++;
 
 
-	m_pCameraTest->Update();
+	//m_pCameraTest->Update();
+	m_pWonderLand->Update();
 	//m_vecScene[nCur]->Update();
 }
 
@@ -88,8 +96,8 @@ void cMainGame::Render()
 	
 
 
-	m_pCameraTest->Render(m_pSprite);
-
+	//m_pCameraTest->Render(m_pSprite);
+	m_pWonderLand->Render(m_pSprite);
 	
 	
 	//if (m_pGrid)
