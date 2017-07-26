@@ -11,6 +11,7 @@ public:
 	virtual ~cCharacter();
 protected:
 	float m_fRotY;
+	D3DXMATRIXA16 m_matWorld;
 	SYNTHESIZE(cSkinnedMesh*, m_pSkinnedMesh, Mesh);
 	SYNTHESIZE(D3DXVECTOR3, m_vPosition, vPos);
 	SYNTHESIZE(D3DXVECTOR3, m_vDirection, vDir);

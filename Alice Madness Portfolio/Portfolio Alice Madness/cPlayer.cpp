@@ -8,6 +8,7 @@ cPlayer::cPlayer():state(CHARACTER_Idle)
 	m_pSkinnedMesh = NULL;
 	m_vPosition = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_vDirection = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+	D3DXMatrixIdentity(&m_matWorld);
 }
 
 
@@ -23,9 +24,22 @@ void cPlayer::Setup()
 }
 void cPlayer::Update()
 {
-
+	float fmoveSpeed = 2.5f;
 	//움직임 테스트와 키 테스트
-	if (g_pKeyManager->IsStayKeyDown('W'))
+	if (g_pKeyManager->IsStayKeyDown('A'))
+	{
+		state = CHARACTER_Idle;
+
+		m_fRotY -= 0.1f;
+	}
+	else if (g_pKeyManager->IsStayKeyDown('D'))
+	{
+		state = CHARACTER_Idle;
+
+		m_fRotY += 0.1f;
+	}
+
+	else if (g_pKeyManager->IsStayKeyDown('W'))
 	{
 		
 		if (state != CHARACTER_Alice_Walk)
@@ -33,7 +47,7 @@ void cPlayer::Update()
 			state = CHARACTER_Alice_Walk;
 			m_pSkinnedMesh->SetAnimationIndexBlend(state);
 		}
-		m_vPosition += m_vDirection * 0.09f;
+		m_vPosition += m_vDirection * fmoveSpeed;
 
 
 
@@ -55,33 +69,8 @@ void cPlayer::Update()
 			m_pSkinnedMesh->SetAnimationIndexBlend(state);
 		}
 
-		m_vPosition -= m_vDirection * 0.09f;
+		m_vPosition -= m_vDirection * fmoveSpeed;
 	}
-
-	/*else if (g_pKeyManager->IsStayKeyDown('A'))
-	{
-
-		if (state != (CHARACTER_STATE)10)
-		{
-			state = (CHARACTER_STATE)10;
-
-			m_pSkinnedMesh->SetAnimationIndexBlend(state);
-		}
-
-		m_fRotY -= 0.1f;
-	}
-	else if (g_pKeyManager->IsStayKeyDown('D'))
-	{
-
-		if (state != (CHARACTER_STATE)10)
-		{
-			state = (CHARACTER_STATE)10;
-
-			m_pSkinnedMesh->SetAnimationIndexBlend(state);
-		}
-
-		m_fRotY += 0.1f;
-	}*/
 
 	else if (state != CHARACTER_Idle)
 	{
@@ -93,6 +82,16 @@ void cPlayer::Update()
 		}
 
 	}
+
+	//선회
+	D3DXMATRIXA16 matR, matT;
+	D3DXMatrixRotationY(&matR, m_fRotY);
+	m_vDirection = D3DXVECTOR3(0, 0, -1);
+
+	D3DXVec3TransformNormal(&m_vDirection, &m_vDirection, &matR);
+
+	D3DXMatrixTranslation(&matT, m_vPosition.x, m_vPosition.y, m_vPosition.z);
+	m_matWorld = (matR*matT)*0.03f;
 
 
 	//if (g_pKeyManager->IsOnceKeyDown('1'))
@@ -119,7 +118,7 @@ void cPlayer::Render()
 	D3DXMatrixTranslation(&matR, m_vPosition.x, m_vPosition.y, m_vPosition.z);
 	//m_pSkinnedMesh->SetTransform((D3DXMATRIXA16*)&(matR));
 
-	m_pSkinnedMesh->SetTransform((D3DXMATRIXA16*)&(matS * matR));
+	m_pSkinnedMesh->SetTransform(&m_matWorld);
 	m_pSkinnedMesh->UpdateAndRender();
 
 }
