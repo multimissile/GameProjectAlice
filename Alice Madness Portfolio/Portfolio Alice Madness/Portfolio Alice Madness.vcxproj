@@ -183,6 +183,7 @@
     <ClInclude Include="cUITest.h" />
     <ClInclude Include="cWonderLand.h" />
     <ClInclude Include="cXLoader.h" />
+    <ClInclude Include="iMap.h" />
     <ClInclude Include="Portfolio Alice Madness.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -222,6 +223,7 @@
     <ClCompile Include="cUITest.cpp" />
     <ClCompile Include="cWonderLand.cpp" />
     <ClCompile Include="cXLoader.cpp" />
+    <ClCompile Include="iMap.cpp" />
     <ClCompile Include="Portfolio Alice Madness.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

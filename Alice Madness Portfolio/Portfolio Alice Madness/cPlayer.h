@@ -46,7 +46,7 @@ private:
 	
 public:
 	void Setup();
-	void Update();
+	void Update(iMap* pMap);
 	void Render();
 };
 

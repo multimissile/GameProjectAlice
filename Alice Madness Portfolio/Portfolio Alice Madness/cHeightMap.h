@@ -1,7 +1,8 @@
 #pragma once
+#include "iMap.h"
 
-
-class cHeightMap
+class cHeightMap:
+	public iMap
 {
 	//MTL TEXTURE TILE INFO
 	//VERTEX....

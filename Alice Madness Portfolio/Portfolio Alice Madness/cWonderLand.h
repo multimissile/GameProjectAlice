@@ -8,7 +8,6 @@ class cPlayer;
 
 class cWonderLand : public cScene		
 {
-
 //1. 캐릭터
 	cPlayer* m_pPlayer;
 //2. 적

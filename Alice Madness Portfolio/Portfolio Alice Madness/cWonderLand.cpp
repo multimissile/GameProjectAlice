@@ -3,7 +3,7 @@
 #include "cPlayer.h"
 
 cWonderLand::cWonderLand():
-	m_pPlayer(NULL)
+	m_pPlayer(NULL)	
 //초기화
 {
 	m_pImage = NULL;
@@ -12,7 +12,8 @@ cWonderLand::cWonderLand():
 	m_vRot = D3DXVECTOR3(-0.6f, 0.4f, 0.0f);
 	m_vUp = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	m_fCameraDistance = 30.0f;
-	m_pMapTest = NULL;
+	m_pMap = NULL;
+	//m_pMapTest = NULL;
 	m_pCamera = NULL;
 	m_pCameraMesh = NULL;
 
@@ -22,7 +23,8 @@ cWonderLand::cWonderLand():
 cWonderLand::~cWonderLand()
 {
 	SAFE_DELETE(m_pPlayer);
-	SAFE_DELETE(m_pMapTest);
+	//SAFE_DELETE(m_pMapTest);
+	SAFE_DELETE(m_pMap);
 	//SAFE_DELETE(m_pBox);
 	SAFE_DELETE(m_pImage);
 	SAFE_DELETE(m_pCameraMesh);
@@ -42,6 +44,7 @@ void cWonderLand::Setup(cCamera* pCamera)
 	m_pCameraMesh = g_pMeshGroupManager->GetMeshGroupX("TestFolder", "Camera_view_2.X", MESH_OBJECT);
 
 	m_pCamera = pCamera;
+	
 	RECT rc;
 	GetClientRect(g_hWnd, &rc);
 	rc.left = (rc.right - rc.left) / 2.f;
@@ -57,10 +60,15 @@ void cWonderLand::Setup(cCamera* pCamera)
 	m_pPlayer = new cPlayer;
 	m_pPlayer->Setup();
 
+	
 	vecPchar.push_back(m_pPlayer);
+	
+	cHeightMap* pMap = new cHeightMap;
+	pMap->Setup("TestFolder", "HeightMap.raw", "MossRock_Tile_DM.tga");
+	m_pMap = pMap;
 
-	m_pMapTest = new cMapTest;
-	m_pMapTest->Setup();
+	//카메라가 캐릭터 따라감
+	//m_pCamera->Setup(&m_pPlayer->GetvPos());
 }
 
 void cWonderLand::Update()
@@ -68,7 +76,7 @@ void cWonderLand::Update()
 	if (!vecPchar.empty()) {
 		for each(auto p  in vecPchar)
 		{
-			p->Update();
+			p->Update(m_pMap);
 		}
 	}
 	ControlCamera();
@@ -122,8 +130,10 @@ void cWonderLand::Render(LPD3DXSPRITE pSprite)
 			p->Render();
 		}
 	}
-	if (m_pMapTest)
-		m_pMapTest->Render();
+	if (m_pMap)
+		m_pMap->Render();
+	/*if (m_pMapTest)
+		m_pMapTest->Render();*/
 
 	//복구
 	g_pD3DDevice->SetViewport(&orgViewPort);
@@ -139,8 +149,10 @@ void cWonderLand::Render(LPD3DXSPRITE pSprite)
 			p->Render();
 		}
 	}
-	if (m_pMapTest)
-		m_pMapTest->Render();
+	if (m_pMap)
+		m_pMap->Render();
+	/*if (m_pMapTest)
+		m_pMapTest->Render();*/
 
 
 }

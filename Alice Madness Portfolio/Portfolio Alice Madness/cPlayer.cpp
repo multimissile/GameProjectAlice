@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "cPlayer.h"
+#include "iMap.h"
 
 
 cPlayer::cPlayer():state(CHARACTER_Idle)
@@ -22,9 +23,12 @@ void cPlayer::Setup()
 	SetMesh(new cSkinnedMesh("TestFolder", "alice_knife.X"));
 	m_pSkinnedMesh->SetAnimationIndexBlend(state);
 }
-void cPlayer::Update()
+void cPlayer::Update(iMap* pMap)
 {
+	m_pMap = pMap;
 	float fmoveSpeed = 2.5f;
+	D3DXVECTOR3 vPosition = m_vPosition;
+
 	//움직임 테스트와 키 테스트
 	if (g_pKeyManager->IsStayKeyDown('A'))
 	{
@@ -47,7 +51,7 @@ void cPlayer::Update()
 			state = CHARACTER_Alice_Walk;
 			m_pSkinnedMesh->SetAnimationIndexBlend(state);
 		}
-		m_vPosition += m_vDirection * fmoveSpeed;
+		vPosition += m_vDirection * fmoveSpeed;
 
 
 
@@ -69,7 +73,7 @@ void cPlayer::Update()
 			m_pSkinnedMesh->SetAnimationIndexBlend(state);
 		}
 
-		m_vPosition -= m_vDirection * fmoveSpeed;
+		vPosition -= m_vDirection * fmoveSpeed;
 	}
 
 	else if (state != CHARACTER_Idle)
@@ -83,6 +87,16 @@ void cPlayer::Update()
 
 	}
 
+	//이동
+	if (pMap) {
+		if (pMap->GetHeight(vPosition.x, vPosition.y, vPosition.z)) {
+			m_vPosition = vPosition;
+		}
+		else {
+
+		}
+	}
+
 	//선회
 	D3DXMATRIXA16 matR, matT;
 	D3DXMatrixRotationY(&matR, m_fRotY);
@@ -93,6 +107,7 @@ void cPlayer::Update()
 	D3DXMatrixTranslation(&matT, m_vPosition.x, m_vPosition.y, m_vPosition.z);
 	m_matWorld = (matR*matT)*0.03f;
 
+	
 
 	//if (g_pKeyManager->IsOnceKeyDown('1'))
 	//{

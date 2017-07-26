@@ -15,7 +15,7 @@ void cCharacter::Setup()
 {
 }
 
-void cCharacter::Update()
+void cCharacter::Update(iMap* pMap)
 {
 }
 

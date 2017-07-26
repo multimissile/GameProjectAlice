@@ -12,6 +12,7 @@ cCamera::cCamera()
 }
 
 
+
 cCamera::~cCamera()
 {
 	//SAFE_RELEASE(m_pCameraSphere);

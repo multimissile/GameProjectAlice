@@ -2,7 +2,8 @@
 #include "cCamera.h"
 #include "cCharacter.h"
 #include "cSpriteImage.h"
-#include "cMapTest.h"
+#include "iMap.h"
+#include "cHeightMap.h"
 #include "cMeshGroup.h"
 
 
@@ -22,7 +23,8 @@ protected:
 	//cBox* m_pBox;
 	cSpriteImage* m_pImage;
 
-	cMapTest* m_pMapTest;
+	//cMapTest* m_pMapTest;
+	iMap*	m_pMap;
 
 	cCamera* m_pCamera;
 
