@@ -55,8 +55,8 @@ public:
 	D3DXVECTOR3 vGetEye() {
 		return m_vEye;
 	}
-	D3DXVECTOR3 m_vLookAt() {
-		return m_vEye;
+	D3DXVECTOR3 vGetLookAt() {
+		return m_vLookAt;
 	}
 	D3DXVECTOR3 vGetUp() {
 		return m_vUp;

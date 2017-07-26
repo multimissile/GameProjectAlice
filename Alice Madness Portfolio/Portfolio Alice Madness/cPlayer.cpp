@@ -4,9 +4,10 @@
 
 cPlayer::cPlayer():state(CHARACTER_Idle)
 {
+	m_fRotY = 0.0f;
 	m_pSkinnedMesh = NULL;
 	m_vPosition = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_vDirection = D3DXVECTOR3(1.0f, 0.0f, 0.0f);
+	m_vDirection = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
 }
 
 
@@ -32,7 +33,7 @@ void cPlayer::Update()
 			state = CHARACTER_Alice_Walk;
 			m_pSkinnedMesh->SetAnimationIndexBlend(state);
 		}
-		m_vPosition += D3DXVECTOR3(0, 0, -1) * 0.09f;
+		m_vPosition += m_vDirection * 0.09f;
 
 
 
@@ -54,8 +55,33 @@ void cPlayer::Update()
 			m_pSkinnedMesh->SetAnimationIndexBlend(state);
 		}
 
-		m_vPosition += D3DXVECTOR3(0, 0, +1) * 0.09f;
+		m_vPosition -= m_vDirection * 0.09f;
 	}
+
+	/*else if (g_pKeyManager->IsStayKeyDown('A'))
+	{
+
+		if (state != (CHARACTER_STATE)10)
+		{
+			state = (CHARACTER_STATE)10;
+
+			m_pSkinnedMesh->SetAnimationIndexBlend(state);
+		}
+
+		m_fRotY -= 0.1f;
+	}
+	else if (g_pKeyManager->IsStayKeyDown('D'))
+	{
+
+		if (state != (CHARACTER_STATE)10)
+		{
+			state = (CHARACTER_STATE)10;
+
+			m_pSkinnedMesh->SetAnimationIndexBlend(state);
+		}
+
+		m_fRotY += 0.1f;
+	}*/
 
 	else if (state != CHARACTER_Idle)
 	{
