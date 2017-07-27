@@ -57,8 +57,7 @@ void cMainGame::Setup()
 	/*m_pCameraTest = new cCameraTest;
 	m_pCameraTest->Setup(m_pCamera);*/
 
-	m_pWonderLand = new cWonderLand;
-	m_pWonderLand->Setup(m_pCamera);
+	
 
 	m_vecScene.push_back(new cEntry);
 	m_vecScene.back()->Setup();
@@ -66,6 +65,9 @@ void cMainGame::Setup()
 	m_vecScene.back()->Setup();
 	m_vecScene.push_back(new cWonderLand);
 	m_vecScene.back()->Setup();
+
+	m_pWonderLand = new cWonderLand;
+	m_pWonderLand->Setup(m_pCamera);
 
 	nCur = 0;
 }

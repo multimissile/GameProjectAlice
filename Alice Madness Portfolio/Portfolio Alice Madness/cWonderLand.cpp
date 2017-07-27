@@ -59,6 +59,7 @@ void cWonderLand::Setup(cCamera* pCamera)
 
 	m_pPlayer = new cPlayer;
 	m_pPlayer->Setup();
+	m_pPlayer->SetCamera(m_pCamera);
 
 	
 	vecPchar.push_back(m_pPlayer);
@@ -68,7 +69,7 @@ void cWonderLand::Setup(cCamera* pCamera)
 	m_pMap = pMap;
 
 	//카메라가 캐릭터 따라감
-	//m_pCamera->Setup(&m_pPlayer->GetvPos());
+	m_pCamera->Setup(&m_pPlayer->GetPosition());
 }
 
 void cWonderLand::Update()
@@ -121,7 +122,6 @@ void cWonderLand::Render(LPD3DXSPRITE pSprite)
 
 	g_pD3DDevice->GetTransform(D3DTS_VIEW, &orgView);
 	g_pD3DDevice->SetTransform(D3DTS_VIEW, &view);
-
 	if (m_pCamera)
 		RenderCamera();
 	if (!vecPchar.empty()) {

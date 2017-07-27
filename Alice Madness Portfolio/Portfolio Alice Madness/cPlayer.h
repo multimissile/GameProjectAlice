@@ -2,6 +2,7 @@
 #include "cCharacter.h"
 
 class cSkinnedMesh;
+class cCamera;
 
 enum CHARACTER_STATE
 {
@@ -43,10 +44,12 @@ public:
 private:
 	
 	CHARACTER_STATE state;
-	
+	cCamera* m_pCamera;
 public:
 	void Setup();
+	void SetCamera(cCamera* pCamera);
 	void Update(iMap* pMap);
 	void Render();
+	virtual D3DXVECTOR3& GetPosition();
 };
 

@@ -16,6 +16,7 @@ private:
 	D3DXVECTOR3		m_vEye;
 	D3DXVECTOR3		m_vLookAt;
 	D3DXVECTOR3		m_vUp;
+	//D3DXVECTOR3		m_pvDirection;   Eye에서 pos 빼서 사용하기로 함
 	D3DXVECTOR3*	m_pvTarget;
 	//D3DXVECTOR3*	m_pvDirection;
 

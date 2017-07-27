@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "cPlayer.h"
 #include "iMap.h"
+#include "cCamera.h"
 
 
-cPlayer::cPlayer():state(CHARACTER_Idle)
+cPlayer::cPlayer():state(CHARACTER_Idle), m_pCamera(NULL)
 {
 	m_fRotY = 0.0f;
 	m_pSkinnedMesh = NULL;
@@ -23,27 +24,40 @@ void cPlayer::Setup()
 	SetMesh(new cSkinnedMesh("TestFolder", "alice_knife.X"));
 	m_pSkinnedMesh->SetAnimationIndexBlend(state);
 }
+void cPlayer::SetCamera(cCamera * pCamera)
+{
+	m_pCamera = pCamera;
+}
 void cPlayer::Update(iMap* pMap)
 {
 	m_pMap = pMap;
-	float fmoveSpeed = 2.5f;
+	float fmoveSpeed = 0.5f;
 	D3DXVECTOR3 vPosition = m_vPosition;
 
-	//움직임 테스트와 키 테스트
+	//카메라 돌면 캐릭터도 돌게 설정
+	D3DXVECTOR3 CameraDir = this->GetPosition() - m_pCamera->vGetEye();
+	CameraDir.y = 0.0f;
+	D3DXVec3Normalize(&CameraDir, &CameraDir);
+	//D3DXMatrixRotationY(&CameraDir.y)
+	float fDotL=D3DXVec3Dot(&CameraDir, &m_vDirection);
+
+	//if fDot<=0
+	
 	if (g_pKeyManager->IsStayKeyDown('A'))
 	{
-		state = CHARACTER_Idle;
+		//state = CHARACTER_Idle;
 
 		m_fRotY -= 0.1f;
 	}
 	else if (g_pKeyManager->IsStayKeyDown('D'))
 	{
-		state = CHARACTER_Idle;
+		//state = CHARACTER_Idle;
 
 		m_fRotY += 0.1f;
 	}
 
-	else if (g_pKeyManager->IsStayKeyDown('W'))
+	//움직임 테스트와 키 테스트
+	if (g_pKeyManager->IsStayKeyDown('W'))
 	{
 		
 		if (state != CHARACTER_Alice_Walk)
@@ -92,9 +106,6 @@ void cPlayer::Update(iMap* pMap)
 		if (pMap->GetHeight(vPosition.x, vPosition.y, vPosition.z)) {
 			m_vPosition = vPosition;
 		}
-		else {
-
-		}
 	}
 
 	//선회
@@ -105,7 +116,7 @@ void cPlayer::Update(iMap* pMap)
 	D3DXVec3TransformNormal(&m_vDirection, &m_vDirection, &matR);
 
 	D3DXMatrixTranslation(&matT, m_vPosition.x, m_vPosition.y, m_vPosition.z);
-	m_matWorld = (matR*matT)*0.03f;
+	m_matWorld = matR*matT;
 
 	
 
@@ -132,8 +143,13 @@ void cPlayer::Render()
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
 	D3DXMatrixTranslation(&matR, m_vPosition.x, m_vPosition.y, m_vPosition.z);
 	//m_pSkinnedMesh->SetTransform((D3DXMATRIXA16*)&(matR));
-
-	m_pSkinnedMesh->SetTransform(&m_matWorld);
+	//m_pSkinnedMesh->SetTransform((D3DXMATRIXA16*)&(matS * matR));
+	m_pSkinnedMesh->SetTransform((D3DXMATRIXA16*)&(matS*m_matWorld));
 	m_pSkinnedMesh->UpdateAndRender();
 
+}
+
+D3DXVECTOR3& cPlayer::GetPosition()
+{
+	return m_vPosition;
 }
