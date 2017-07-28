@@ -30,6 +30,9 @@ void cPlayer::SetCamera(cCamera * pCamera)
 }
 void cPlayer::Update(iMap* pMap)
 {
+	//선회용으로 필요
+	D3DXMATRIXA16 matR, matT;
+
 	m_pMap = pMap;
 	float fmoveSpeed = 0.5f;
 	D3DXVECTOR3 vPosition = m_vPosition;
@@ -38,12 +41,28 @@ void cPlayer::Update(iMap* pMap)
 	D3DXVECTOR3 CameraDir = this->GetPosition() - m_pCamera->vGetEye();
 	CameraDir.y = 0.0f;
 	D3DXVec3Normalize(&CameraDir, &CameraDir);
-	//D3DXMatrixRotationY(&CameraDir.y)
-	float fDotL=D3DXVec3Dot(&CameraDir, &m_vDirection);
-
-	//if fDot<=0
 	
-	if (g_pKeyManager->IsStayKeyDown('A'))
+	D3DXMatrixRotationY(&matR, 90);
+	D3DXVECTOR3 LCameraDir;
+	D3DXVec3TransformNormal(&LCameraDir, &CameraDir, &matR);
+
+	D3DXMatrixRotationY(&matR, -90);
+	D3DXVECTOR3 RCameraDir;
+	D3DXVec3TransformNormal(&RCameraDir, &CameraDir, &matR);
+
+	float fDotL= D3DXVec3Dot(&LCameraDir, &m_vDirection);
+	float fDotR= D3DXVec3Dot(&RCameraDir, &m_vDirection);
+
+	if (abs(fDotL - fDotR) > 0.2f) {
+		if (fDotL <= fDotR) {
+			m_fRotY += 0.1f;
+		}
+		else {
+			m_fRotY -= 0.1f;
+		}
+	}
+	
+	/*if (g_pKeyManager->IsStayKeyDown('A'))
 	{
 		//state = CHARACTER_Idle;
 
@@ -54,7 +73,7 @@ void cPlayer::Update(iMap* pMap)
 		//state = CHARACTER_Idle;
 
 		m_fRotY += 0.1f;
-	}
+	}*/
 
 	//움직임 테스트와 키 테스트
 	if (g_pKeyManager->IsStayKeyDown('W'))
@@ -109,7 +128,7 @@ void cPlayer::Update(iMap* pMap)
 	}
 
 	//선회
-	D3DXMATRIXA16 matR, matT;
+	
 	D3DXMatrixRotationY(&matR, m_fRotY);
 	m_vDirection = D3DXVECTOR3(0, 0, -1);
 
