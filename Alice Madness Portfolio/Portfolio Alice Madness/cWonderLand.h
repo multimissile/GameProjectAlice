@@ -3,13 +3,14 @@
 #include "cScene.h"
 
 //class cCharacterTest;
-class cPlayer;
-
+//class cCharacterTest;
+//class cPlayer;
+//class cMeshGroup;
 
 class cWonderLand : public cScene		
 {
 //1. 캐릭터
-	cPlayer* m_pPlayer;
+	//cPlayer* m_pPlayer;
 //2. 적
 //3. 오브젝트
 //4. 타일		
@@ -17,9 +18,7 @@ class cWonderLand : public cScene
 //6. 이벤트
 
 	//cCharacterTest* m_pCharacterTest;
-
-
-
+//
 
 
 public:
@@ -29,12 +28,12 @@ public:
 	//void Setup(char* szFolder, char* szFile);
 	void Setup();
 	void Update();
-	void Render(LPD3DXSPRITE pSprite);
+	void Render();
 
-	void Setup(cCamera* pCamera);
+	//void Setup(cCamera* pCamera);
 
-	void ControlCamera();
-	void RenderCamera();
+	//void ControlCamera();
+	//void RenderCamera();
 
 };
 
