@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "cCharacterTest.h"
 #include "cSkinnedMesh.h"
+//바운딩박스로 추가
+#include "cBoundingBox.h"
+
 
 cCharacterTest::cCharacterTest()
 	:m_pSkinnedMesh(NULL)
@@ -20,6 +23,18 @@ void cCharacterTest::Setup()
 	m_pSkinnedMesh = new cSkinnedMesh("TestFolder", "alice_knife.X");
 	m_pSkinnedMesh->SetAnimationIndexBlend(state);
 }
+void cCharacterTest::Setup( char * szFolder, char * szFile, float fScale)
+{
+	m_pSkinnedMesh = new cSkinnedMesh(szFolder, szFile,fScale);
+	m_pSkinnedMesh->SetAnimationIndexBlend(state);
+	
+	cBoundingBox* pB = new cBoundingBox;
+	pB->Setup(m_pSkinnedMesh->GetMax(), m_pSkinnedMesh->GetMin());
+	m_pBounding = pB;
+
+
+
+}
 void cCharacterTest::Update()
 {
 
@@ -32,8 +47,14 @@ void cCharacterTest::Update()
 			state = CHARACTER_Alice_Walk;
 			m_pSkinnedMesh->SetAnimationIndexBlend(state);
 		}
-		m_vPosition += D3DXVECTOR3(0, 0, -1) * 0.09f;
 
+		D3DXVECTOR3 vDir(0, 0, -1);
+		//앞에 아무것도 없으면 가기
+		//if (!g_pGameManager->CheckCollision(m_pBounding, vDir))
+		m_vPosition += vDir* 0.09f;
+		
+		
+			//m_vPosition += D3DXVECTOR3(0, 0, -1) *0.09f;
 
 
 		////최대 애니메이션으로 가면 다음으로 넘긴다.
@@ -54,7 +75,10 @@ void cCharacterTest::Update()
 			m_pSkinnedMesh->SetAnimationIndexBlend(state);
 		}
 
-		m_vPosition += D3DXVECTOR3(0, 0, +1) * 0.09f;
+		D3DXVECTOR3 vDir(0, 0, +1);
+		//앞에 아무것도 없으면 가기
+		//if (!g_pGameManager->CheckCollision(m_pBounding, vDir))
+			m_vPosition += vDir* 0.09f;
 	}
 
 	else if (state != CHARACTER_Idle)
@@ -67,6 +91,31 @@ void cCharacterTest::Update()
 		}
 
 	}
+
+	//높이주기
+	float height;
+	//내 위치에서의 높이 너무 높이있으면 못감, 적당히있으면 감
+	//
+	//높이차이가 많이나나 적게나나 없나 체크해서 
+	//높이 차이가 많이나면 떨어지는 모션 + 높이서 떨어진 소리
+	//높이차이가 적게나면 떨어지는 모션 + 떨어진 소리
+	//false 면 떨어지다가 죽은모션 
+
+	//if (g_pGameManager->GetHeight(m_vPosition.x, height, m_vPosition.z))
+	//{
+	//	
+	//	m_vPosition.y = height;
+	//}
+	//
+	//else
+	//{
+	//
+	//
+	//
+	//}
+
+
+
 
 
 	//if (g_pKeyManager->IsOnceKeyDown('1'))
@@ -81,20 +130,57 @@ void cCharacterTest::Update()
 	//}
 
 
+	//월드매트릭스설정
+	D3DXMATRIX matR, matWorld;
+
+	D3DXMatrixTranslation(&matR, m_vPosition.x, m_vPosition.y, m_vPosition.z);
+	
+	matWorld = matR;
+
+	m_pSkinnedMesh->SetTransform((D3DXMATRIXA16*)&matWorld);
+	m_pBounding->Update(&matWorld);
+
+
 }
 
 void cCharacterTest::Render()
 {
-	D3DXMATRIX matS, matR;
-	D3DXMatrixScaling(&matS, 0.04f, 0.04f, 0.04f);
+	//D3DXMATRIX matS, matR;
+	//D3DXMatrixScaling(&matS, 0.04f, 0.04f, 0.04f);
 
 
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
-	D3DXMatrixTranslation(&matR, m_vPosition.x, m_vPosition.y, m_vPosition.z);
+	
 	//m_pSkinnedMesh->SetTransform((D3DXMATRIXA16*)&(matR));
+	
+	//m_pSkinnedMesh->SetTransform((D3DXMATRIXA16*)&(matS * matR));
 
-	m_pSkinnedMesh->SetTransform((D3DXMATRIXA16*)&(matS * matR));
 	m_pSkinnedMesh->UpdateAndRender();
 
+}
+
+D3DXVECTOR3& cCharacterTest::GetMin()
+{
+	return m_pSkinnedMesh->GetMin();
+}
+
+D3DXVECTOR3& cCharacterTest::GetMax()
+{
+	return m_pSkinnedMesh->GetMax();
+}
+
+D3DXMATRIX cCharacterTest::GetWorldTM()
+{
+	D3DXMATRIX matT;
+	return *D3DXMatrixTranslation(&matT, 
+		m_vPosition.x, 
+		m_vPosition.y, 
+		m_vPosition.z); 
+
+}
+
+cSkinnedMesh * cCharacterTest::GetSkinnedMesh()
+{
+	return m_pSkinnedMesh;
 }
 

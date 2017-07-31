@@ -33,23 +33,34 @@ enum CHARACTER_STATE
 };
 
 
+//상속추가 ( public 상속
+#include "cObject.h"
 
 
 
-class cCharacterTest
+class cCharacterTest : public cObject
 {
 	cSkinnedMesh* m_pSkinnedMesh;
 	CHARACTER_STATE state;
 
 	D3DXVECTOR3 m_vPosition;
 
-
+	
 public:
 	cCharacterTest();
 	~cCharacterTest();
 
-	void Setup();
+	void Setup();	//삭제 예정
+	//파일명으로 로드되도록 수정
+	void Setup( char* szFolder,  char* szFile, float scale = 0.03f);
 	void Update();
 	void Render();
+
+	
+public:
+	D3DXVECTOR3& GetMin(); 
+	D3DXVECTOR3& GetMax(); 
+	D3DXMATRIX GetWorldTM();
+	cSkinnedMesh* GetSkinnedMesh();
 };
 

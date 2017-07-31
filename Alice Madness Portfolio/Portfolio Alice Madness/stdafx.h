@@ -102,4 +102,5 @@ static class_name* GetInstance()\
 #include "cMeshGroupManager.h"
 #include "cFontManager.h"
 #include "cSPrintDevice.h"
-//#include "cCamera.h"
+#include "cCamera.h"
+#include "cGameManager.h"

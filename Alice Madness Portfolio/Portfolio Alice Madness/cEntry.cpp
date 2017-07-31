@@ -37,12 +37,12 @@ void cEntry::Update()
 
 }
 
-void cEntry::Render(LPD3DXSPRITE pSprite)
+void cEntry::Render()
 {
 	//ui1
-	m_pBackGround->Render(pSprite);
+	m_pBackGround->Render();
 	//ui2
-	m_pLogo->Render(pSprite);
+	m_pLogo->Render();
 
 	//ÅØ½ºÆ®·»´õ
 	RECT rc;
@@ -50,5 +50,5 @@ void cEntry::Render(LPD3DXSPRITE pSprite)
 	rc.top = (rc.bottom - rc.top) / 3.f * 2.f;
 
 	g_pSPrintDevice->SetColor(D3DCOLOR_XRGB(255, 255, 255));
-	g_pSPrintDevice->PrintStr(pSprite, "Enter", rc);
+	g_pSPrintDevice->PrintStr( "Enter", rc);
 }

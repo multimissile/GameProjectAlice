@@ -8,3 +8,45 @@ BOOL WINAPI GetCursorPos( _Out_ LPPOINT lpPoint );
 
  이렇게 사용합시다
 
+
+
+//170728 수정한 내역
+
+sprite 필요할 땐 g_pSprite-> 로 가져다 사용하면 됩니다.
+SPrintDevice : m_pSprite 필요하지 않게 수정하였습니다.
+
+camera 전역으로 
+
+cGameManager 추가( 모든 게임의 객체들 관리 해줌니다.
+Game 클래스 시작될 때 자신이 필요한 파일명으로 game Manager->Load 하여 사용할 예정입니다.
+
+각각 객체가 필요한 부분도 g_pGameManager->Get__()해서 가져다 사용 할수 있습니다..)
+
+cObject 추가 
+게임 내의 모든 객체는 bounding box, 카메라 영역 안에 잇는것만 렌더 처리
+등 공통적인부분을 처리하기 위해  cObject 객체를 public 으로 상속받아 사용합니다.
+
+모든 객체들은 cObject 의 인터페이스 함수void Setup(const char* szFolder, const char* szFile, float scale = 0.03f);
+를 오버라이드하여 사용한다.
+(GameManager가 로드할 데이터를 가지고 한꺼번에 객체들을 setup할 수있도록 하기위함 )
+
+Setup 에서 Scale 값을 지정해 주고 객체의 월드매트릭스를 설정 할 때 Scale 값은 넣지 않는다.
+(바운딩 박스도 동일한 스케일이 적용된 min max 값이 필요하기 때문에 Setup 에서 scale을 설정합니다.)
+
+scale 값변경은 (SetScale)  alice 가 소인화,또는 거인화 했을 때 빼고는 변경하지 않습니다.
+
+높이는 g_pGameManager->GetHeight();에 인자를 넣어주면 얻어올 수 있습니다.
+
+cBounding cBoundingSphere cBoundingBox 추가
+객체들이 가진 충돌 박스
+cBoundingBox 와 cBoundingSphere가 cBounding을 상속받았습니다.
+
+게임내의 객체들의 최상위 클래스인 cObject 객체가 cBounding타입으로 가지고 있기 때문에
+각각 객체의 setup부분에서 필요한 타입으로 생성해서 사용하면 됩니다.
+
+
+CharacterTest 부분 참고
+
+bounging box 의 setup에서 넘겨주는 min max 는 skinnedmesh에서 가져올 때 skinnedmesh가 scale 값 적용시켜서 주도록 되어있으므로
+따로 크기 지정해주지 않아도 됩니다.
+

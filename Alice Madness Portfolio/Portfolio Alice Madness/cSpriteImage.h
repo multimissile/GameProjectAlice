@@ -28,7 +28,7 @@ public:
 	bool IsProbePt(POINT pt);
 
 
-	void Render(LPD3DXSPRITE& pSprite ,D3DXVECTOR3* vPosition);
-	void Render(LPD3DXSPRITE& pSprite);
+	void Render(D3DXVECTOR3* vPosition);
+	void Render();
 };
 

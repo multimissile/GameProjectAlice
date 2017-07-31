@@ -42,6 +42,9 @@ cDeviceManager::cDeviceManager()
 		nVertexProcessing,						//behavior flag 위에서 얻어온정보 
 		&stD3DPP,								//위에서 만든D3DPRESENT_PARAMETERS구조체
 		&m_pD3DDevice);							//IDirect3DDevice9 객체
+
+	D3DXCreateSprite(m_pD3DDevice, &m_pSprite);
+
 }
 cDeviceManager::~cDeviceManager()
 {
@@ -50,6 +53,7 @@ cDeviceManager::~cDeviceManager()
 
 void cDeviceManager::Destroy()
 {
-	SAFE_RELEASE(m_pD3D);
+	SAFE_RELEASE(m_pSprite);
 	SAFE_RELEASE(m_pD3DDevice);
+	SAFE_RELEASE(m_pD3D);
 }

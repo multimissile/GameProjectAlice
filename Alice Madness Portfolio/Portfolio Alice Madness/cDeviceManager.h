@@ -4,7 +4,7 @@
 
 #define g_pDeviceManager cDeviceManager::GetInstance()
 #define g_pD3DDevice	 cDeviceManager::GetInstance()->GetDevice()
-//#define g_pSprite		 cDeviceManager::GetInstance()->GetSprite()
+#define g_pSprite		 cDeviceManager::GetInstance()->GetSprite()
 
 class cDeviceManager
 {
@@ -18,10 +18,10 @@ public:
 
 	//«ÿ¡¶
 	void Destroy();						
-//	
-//private:
-//	LPD3DXSPRITE m_pSprite;
-//public:
-//	inline LPD3DXSPRITE	 GetSprite() { return m_pSprite; }
+	
+private:
+	LPD3DXSPRITE m_pSprite;
+public:
+	inline LPD3DXSPRITE	 GetSprite() { return m_pSprite; }
 };
 

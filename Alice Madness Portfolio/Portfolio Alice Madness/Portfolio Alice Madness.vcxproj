@@ -29,7 +29,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140_xp</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -152,17 +152,24 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cAllocateHierarchy.h" />
+    <ClInclude Include="cBounding.h" />
+    <ClInclude Include="cBoundingBox.h" />
+    <ClInclude Include="cBoundingSphere.h" />
     <ClInclude Include="cBox.h" />
     <ClInclude Include="cCamera.h" />
     <ClInclude Include="cCameraTest.h" />
     <ClInclude Include="cCharacter.h" />
     <ClInclude Include="cCharacterTest.h" />
+    <ClInclude Include="cCollisionTest.h" />
     <ClInclude Include="cController.h" />
     <ClInclude Include="cDeviceManager.h" />
     <ClInclude Include="cEntry.h" />
     <ClInclude Include="cFontManager.h" />
+    <ClInclude Include="cGameManager.h" />
+    <ClInclude Include="cGlobalData.h" />
     <ClInclude Include="cGrid.h" />
     <ClInclude Include="cHeightMap.h" />
+    <ClInclude Include="cItemObject.h" />
     <ClInclude Include="cKeyManager.h" />
     <ClInclude Include="cMain.h" />
     <ClInclude Include="cMainGame.h" />
@@ -170,14 +177,18 @@
     <ClInclude Include="cMapTest.h" />
     <ClInclude Include="cMeshGroup.h" />
     <ClInclude Include="cMeshGroupManager.h" />
+    <ClInclude Include="cObject.h" />
     <ClInclude Include="cObjLoader.h" />
     <ClInclude Include="cPlayer.h" />
     <ClInclude Include="cPyramid.h" />
+    <ClInclude Include="cRawLoader.h" />
     <ClInclude Include="cScene.h" />
     <ClInclude Include="cSkinnedMesh.h" />
     <ClInclude Include="cSkinnedMeshManager.h" />
     <ClInclude Include="cSPrintDevice.h" />
     <ClInclude Include="cSpriteImage.h" />
+    <ClInclude Include="cTerainObject.h" />
+    <ClInclude Include="cTerrain.h" />
     <ClInclude Include="cTextureManager.h" />
     <ClInclude Include="cTimeManager.h" />
     <ClInclude Include="cUITest.h" />
@@ -192,17 +203,24 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cAllocateHierarchy.cpp" />
+    <ClCompile Include="cBounding.cpp" />
+    <ClCompile Include="cBoundingBox.cpp" />
+    <ClCompile Include="cBoundingSphere.cpp" />
     <ClCompile Include="cBox.cpp" />
     <ClCompile Include="cCamera.cpp" />
     <ClCompile Include="cCameraTest.cpp" />
     <ClCompile Include="cCharacter.cpp" />
     <ClCompile Include="cCharacterTest.cpp" />
+    <ClCompile Include="cCollisionTest.cpp" />
     <ClCompile Include="cController.cpp" />
     <ClCompile Include="cDeviceManager.cpp" />
     <ClCompile Include="cEntry.cpp" />
     <ClCompile Include="cFontManager.cpp" />
+    <ClCompile Include="cGameManager.cpp" />
+    <ClCompile Include="cGlobalData.cpp" />
     <ClCompile Include="cGrid.cpp" />
     <ClCompile Include="cHeightMap.cpp" />
+    <ClCompile Include="cItemObject.cpp" />
     <ClCompile Include="cKeyManager.cpp" />
     <ClCompile Include="cMain.cpp" />
     <ClCompile Include="cMainGame.cpp" />
@@ -210,14 +228,18 @@
     <ClCompile Include="cMapTest.cpp" />
     <ClCompile Include="cMeshGroup.cpp" />
     <ClCompile Include="cMeshGroupManager.cpp" />
+    <ClCompile Include="cObject.cpp" />
     <ClCompile Include="cObjLoader.cpp" />
     <ClCompile Include="cPlayer.cpp" />
     <ClCompile Include="cPyramid.cpp" />
+    <ClCompile Include="cRawLoader.cpp" />
     <ClCompile Include="cScene.cpp" />
     <ClCompile Include="cSkinnedMesh.cpp" />
     <ClCompile Include="cSkinnedMeshManager.cpp" />
     <ClCompile Include="cSPrintDevice.cpp" />
     <ClCompile Include="cSpriteImage.cpp" />
+    <ClCompile Include="cTerainObject.cpp" />
+    <ClCompile Include="cTerrain.cpp" />
     <ClCompile Include="cTextureManager.cpp" />
     <ClCompile Include="cTimeManager.cpp" />
     <ClCompile Include="cUITest.cpp" />

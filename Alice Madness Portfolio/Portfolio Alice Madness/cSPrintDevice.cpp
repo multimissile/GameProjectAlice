@@ -48,16 +48,16 @@ cSPrintDevice::~cSPrintDevice()
 	
 }
 
-void cSPrintDevice::PrintStr(LPD3DXSPRITE& pSprite, string& str, RECT& rc)
+void cSPrintDevice::PrintStr(string& str, RECT& rc)
 {
-	PrintStr(pSprite, str.c_str(),rc);
+	PrintStr( str.c_str(),rc);
 
 
 }
 
-void cSPrintDevice::PrintStr(LPD3DXSPRITE& pSprite, const char * str, RECT& rc)
+void cSPrintDevice::PrintStr(const char * str, RECT& rc)
 {
-
+	g_pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE);
 	LPD3DXFONT pFont = g_pFontManager->GetFont(m_eFontStyle);
 
 	pFont->DrawText(NULL,
@@ -66,17 +66,19 @@ void cSPrintDevice::PrintStr(LPD3DXSPRITE& pSprite, const char * str, RECT& rc)
 		&rc,
 		m_dwDrawTextFormat,
 		m_dwColor);
+
+	g_pSprite->End();
 }
 
-void cSPrintDevice::PrintStr(LPD3DXSPRITE& pSprite, const char * str, float x, float y, float width, float height)
+void cSPrintDevice::PrintStr( const char * str, float x, float y, float width, float height)
 {
 	RECT rc = { x , y, x + width,y + height };
 
-	PrintStr(pSprite, str, rc);
+	PrintStr( str, rc);
 }
 
-void cSPrintDevice::PrintStr(LPD3DXSPRITE& pSprite, string& str, float x, float y, float width, float height)
+void cSPrintDevice::PrintStr(string& str, float x, float y, float width, float height)
 {
 	RECT rc = { x , y, x + width,y + height };
-	PrintStr(pSprite, str.c_str(), rc);
+	PrintStr( str.c_str(), rc);
 }

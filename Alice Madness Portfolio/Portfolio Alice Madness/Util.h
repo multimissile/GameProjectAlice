@@ -36,6 +36,7 @@ struct ST_PN_VERTEX
 	enum { FVF = D3DFVF_XYZ | D3DFVF_NORMAL };
 };
 
+
 //EPSILON 
 #define EPSILON 0.0001f
 

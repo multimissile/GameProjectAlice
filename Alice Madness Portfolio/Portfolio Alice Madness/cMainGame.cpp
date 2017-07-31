@@ -6,12 +6,10 @@
 #include "cWonderLand.h"
 #include "cEntry.h"
 #include "cMain.h"
-
+#include "cGlobalData.h"
 
 cMainGame::cMainGame()
-	:m_pSprite(NULL)
-	,m_pGrid(NULL)
-	,m_pCamera(NULL)
+	:m_pGrid(NULL)
 	//,m_pCameraTest(NULL)
 	,m_pWonderLand(NULL)
 {
@@ -20,15 +18,15 @@ cMainGame::cMainGame()
 
 cMainGame::~cMainGame()
 {
-	SAFE_RELEASE(m_pSprite);
+
 	SAFE_DELETE(m_pGrid);
-	SAFE_DELETE(m_pCamera);
+
 	//SAFE_DELETE(m_pCameraTest);
 
-	for each(auto p  in m_vecScene)
-	{
-		SAFE_DELETE(p);
-	}
+	//for each(auto p  in m_vecScene)
+	//{
+	//	SAFE_DELETE(p);
+	//}
 
 
 	g_pDeviceManager->Destroy();
@@ -42,45 +40,44 @@ cMainGame::~cMainGame()
 
 void cMainGame::Setup()
 {
+	g_pCamera->Setup();
+
 	g_pSPrintDevice->SetFontStyle(FONT_DAEHAN_40_B);
-	//sprite 만들기
-	D3DXCreateSprite(g_pD3DDevice, &m_pSprite);
 	//조명켜기
 	SetLight();
 
 	m_pGrid = new cGrid;
 	m_pGrid->Setup();
 	
-	m_pCamera = new cCamera;
-	m_pCamera->Setup();
-
+	
 	/*m_pCameraTest = new cCameraTest;
 	m_pCameraTest->Setup(m_pCamera);*/
 
 	
 
-	m_vecScene.push_back(new cEntry);
-	m_vecScene.back()->Setup();
-	m_vecScene.push_back(new cMain);
-	m_vecScene.back()->Setup();
-	m_vecScene.push_back(new cWonderLand);
-	m_vecScene.back()->Setup();
-
+//	m_vecScene.push_back(new cEntry);
+//	m_vecScene.back()->Setup();
+//	m_vecScene.push_back(new cMain);
+//	m_vecScene.back()->Setup();
+//	m_vecScene.push_back(new cWonderLand);
+//	m_vecScene.back()->Setup();
+//
 	m_pWonderLand = new cWonderLand;
-	m_pWonderLand->Setup(m_pCamera);
+	m_pWonderLand->Setup();
 
-	nCur = 0;
+//	nCur = 0;
 }
 
 void cMainGame::Update()
 {
+	g_pCamera->Update();
 	g_pTimeManager->Update();
 
-	if (m_pCamera)
-		m_pCamera->Update();
+	//if (m_pCamera)
+	//	m_pCamera->Update();
 
-	if (g_pKeyManager->IsOnceKeyDown(VK_RETURN))
-		nCur == m_vecScene.size() - 1 ? nCur = 0 : nCur++;
+	//if (g_pKeyManager->IsOnceKeyDown(VK_RETURN))
+	//	nCur == m_vecScene.size() - 1 ? nCur = 0 : nCur++;
 
 
 	//m_pCameraTest->Update();
@@ -99,19 +96,20 @@ void cMainGame::Render()
 
 
 	//m_pCameraTest->Render(m_pSprite);
-	m_pWonderLand->Render(m_pSprite);
+	m_pWonderLand->Render();
 	
 	
-	//if (m_pGrid)
-	//	m_pGrid->Render();
+	if (m_pGrid)
+		m_pGrid->Render();
 
 //	m_vecScene[nCur]->Render(m_pSprite);
+	g_pGlobalData->TestRender();
 
 
 	g_pSPrintDevice->SetColor(D3DCOLOR_XRGB(20, 255, 29));
 	char str[100];
 	sprintf(str, "%d", g_pTimeManager->GetFPS());
-	g_pSPrintDevice->PrintStr(m_pSprite, str, 100, 100, 100, 100);
+	g_pSPrintDevice->PrintStr( str, 100, 100, 100, 100);
 
 	//그리기종료
 	g_pD3DDevice->EndScene();
@@ -123,8 +121,8 @@ void cMainGame::Render()
 
 void cMainGame::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	if (m_pCamera)
-		m_pCamera->WndProc(hWnd, message, wParam, lParam);
+	//if (m_pCamera)
+	g_pCamera->WndProc(hWnd, message, wParam, lParam);
 
 	switch (message)
 	{

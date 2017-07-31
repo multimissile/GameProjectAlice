@@ -20,7 +20,7 @@ public:
 	~cMain();
 	void Setup();
 	void Update();
-	void Render(LPD3DXSPRITE pSprite);
+	void Render();
 };
 
 

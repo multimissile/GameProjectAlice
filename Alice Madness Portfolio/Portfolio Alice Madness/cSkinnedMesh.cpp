@@ -3,6 +3,40 @@
 #include "cAllocateHierarchy.h"
 
 
+cSkinnedMesh::cSkinnedMesh(char * szFolder, char * szFilename, float fScale)
+	: m_pRootFrame(NULL)
+	, m_pAnimController(NULL)
+	, m_dwWorkingPaletteSize(0)
+	, m_pmWorkingPalette(NULL)
+	, m_pEffect(NULL)
+	, m_isAnimBlend(false)
+	, m_fBlenedTime(0.f)
+	, m_fPassedBlendTime(0.f)
+	, m_fScale(fScale)
+{
+	cSkinnedMesh* pSkinnedMesh = g_pSkinnedMeshManager->GetSkinnedMesh(szFolder, szFilename);
+
+	D3DXMatrixIdentity(&m_matWorldTM);
+	m_pRootFrame = pSkinnedMesh->m_pRootFrame;
+	m_dwWorkingPaletteSize = pSkinnedMesh->m_dwWorkingPaletteSize;
+	m_pmWorkingPalette = pSkinnedMesh->m_pmWorkingPalette;
+	m_pEffect = pSkinnedMesh->m_pEffect;
+
+	/// >> : OBB
+	{
+		m_vMin = pSkinnedMesh->m_vMin;
+		m_vMax = pSkinnedMesh->m_vMax;
+	}
+
+	//animation에 관한 정보는 각 객체가 따로 가지고 있어야 하므로 clone
+	pSkinnedMesh->m_pAnimController->CloneAnimationController(
+		pSkinnedMesh->m_pAnimController->GetMaxNumAnimationOutputs(),
+		pSkinnedMesh->m_pAnimController->GetMaxNumAnimationSets(),
+		pSkinnedMesh->m_pAnimController->GetMaxNumTracks(),
+		pSkinnedMesh->m_pAnimController->GetMaxNumEvents(),
+		&m_pAnimController);
+}
+
 cSkinnedMesh::cSkinnedMesh(char* szFolder, char* szFilename)
 	: m_pRootFrame(NULL)
 	, m_pAnimController(NULL)
@@ -12,6 +46,7 @@ cSkinnedMesh::cSkinnedMesh(char* szFolder, char* szFilename)
 	, m_isAnimBlend(false)
 	,m_fBlenedTime(0.f)
 	,m_fPassedBlendTime(0.f)
+	, m_fScale(1.f)
 {
 	cSkinnedMesh* pSkinnedMesh =  g_pSkinnedMeshManager->GetSkinnedMesh(szFolder, szFilename);
 	
@@ -44,6 +79,7 @@ cSkinnedMesh::cSkinnedMesh()
 	, m_pEffect(NULL)
 	, m_vMin(0, 0, 0) /// >> : OBB
 	, m_vMax(0, 0 ,0) /// >> : OBB
+	, m_fScale(1.f)
 {
 }
 
@@ -352,7 +388,6 @@ void cSkinnedMesh::SetAnimationIndexBlend(int nIndex)
 
 	SAFE_RELEASE(pPrevAnimSet);
 	SAFE_RELEASE(pNextAnimSet);
-
 }
 
 bool cSkinnedMesh::GetCurrentAnimationEnd()

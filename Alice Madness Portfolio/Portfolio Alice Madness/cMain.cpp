@@ -37,7 +37,7 @@ void cMain::Setup()
 	m_pMenuLine->SetPosSclRect(rc2);
 
 	//ºô
-	m_pBackGround = g_pMeshGroupManager->GetMeshGroupX("Source/Main", "Main_Plane_2.X", MESH_OBJECT);
+//	m_pBackGround = g_pMeshGroupManager->GetMeshGroupX("Source/Main", "Main_Plane_2.X", MESH_OBJECT);
 
 }
 
@@ -46,7 +46,7 @@ void cMain::Update()
 	
 }
 
-void cMain::Render(LPD3DXSPRITE pSprite)
+void cMain::Render()
 {
 
 	//xÃà 90µµ È¸Àü
@@ -77,7 +77,7 @@ void cMain::Render(LPD3DXSPRITE pSprite)
 
 	//, UI ·»´õ
 
-	m_pMenuLine->Render(pSprite);
+	m_pMenuLine->Render();
 
 
 

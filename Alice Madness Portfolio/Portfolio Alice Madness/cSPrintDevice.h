@@ -17,10 +17,10 @@ public:
 	//void SetColor(D3DCOLOR c);
 	////void Set
 	//
-	void PrintStr(LPD3DXSPRITE& pSprite,string& str, RECT& rc);
-	void PrintStr(LPD3DXSPRITE& pSprite, const char* str, RECT& rc);
-	void PrintStr(LPD3DXSPRITE& pSprite, const char* str, float x, float y, float width, float height);
-	void PrintStr(LPD3DXSPRITE& pSprite, string& str, float x, float y, float width, float height);
+	void PrintStr(string& str, RECT& rc);
+	void PrintStr( const char* str, RECT& rc);
+	void PrintStr( const char* str, float x, float y, float width, float height);
+	void PrintStr( string& str, float x, float y, float width, float height);
 
 
 

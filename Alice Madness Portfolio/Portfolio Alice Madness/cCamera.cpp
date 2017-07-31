@@ -103,8 +103,8 @@ void cCamera::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_MOUSEMOVE:
 	{
 		
-		if (m_isLButtonDown)
-		{
+		//if (m_isLButtonDown)
+		//{
 			POINT ptCurMouse;
 			ptCurMouse.x = LOWORD(lParam);
 			ptCurMouse.y = HIWORD(lParam);
@@ -122,7 +122,7 @@ void cCamera::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			//	m_vCamRotAngle.x = -D3DX_PI / 2.f - 0.0001F;
 
 			m_ptPrevMouse = ptCurMouse;
-		}
+		//}
 
 	}break;
 	case WM_MOUSEWHEEL:

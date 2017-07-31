@@ -74,34 +74,34 @@ bool cSpriteImage::IsProbePt(POINT pt)
 	return m_pBox->IsProbePt(pt);
 }
 
-void cSpriteImage::Render(LPD3DXSPRITE& pSprite, D3DXVECTOR3* vPosition)
+void cSpriteImage::Render( D3DXVECTOR3* vPosition)
 {
 	if (!m_pTexture)
 		return;
 
-	pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE);
+	g_pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE);
 		
-	pSprite->SetTransform(&m_pBox->GetWorldMatrix());
+	g_pSprite->SetTransform(&m_pBox->GetWorldMatrix());
 
-	pSprite->Draw(m_pTexture, 0, 0, vPosition, D3DCOLOR_RGBA(255, 255, 255, 255));
+	g_pSprite->Draw(m_pTexture, 0, 0, vPosition, D3DCOLOR_RGBA(255, 255, 255, 255));
 
 
-	pSprite->End();
+	g_pSprite->End();
 }
 
-void cSpriteImage::Render(LPD3DXSPRITE& pSprite)
+void cSpriteImage::Render()
 {
 	if (!m_pTexture)
 		return;
 
-	pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE);
+	g_pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE);
 
-	pSprite->SetTransform(&m_pBox->GetWorldMatrix());
+	g_pSprite->SetTransform(&m_pBox->GetWorldMatrix());
 
-	pSprite->Draw(m_pTexture, 0, 0, 0, D3DCOLOR_RGBA(255, 255, 255, 255));
+	g_pSprite->Draw(m_pTexture, 0, 0, 0, D3DCOLOR_RGBA(255, 255, 255, 255));
 
 
-	pSprite->End();
+	g_pSprite->End();
 }
 
 

@@ -2,15 +2,15 @@
 
 /* 현재는 해당 카메라를 기본으로 사용합니다. */
 
-//#define g_pCamera cCamera::GetInstance()
+#define g_pCamera cCamera::GetInstance()
 
 class cCamera
 {
-	//SINGLETON(cCamera);
+	SINGLETON(cCamera);
 
 public:
-	cCamera();
-	~cCamera();
+	//cCamera();
+	//~cCamera();
 
 private:
 	D3DXVECTOR3		m_vEye;

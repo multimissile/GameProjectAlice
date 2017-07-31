@@ -36,7 +36,7 @@ cCameraTest::~cCameraTest()
 
 void cCameraTest::Setup(cCamera* pCamera)
 {
-	m_pCameraMesh = g_pMeshGroupManager->GetMeshGroupX("TestFolder", "Camera_view_2.X", MESH_OBJECT);
+	//m_pCameraMesh = g_pMeshGroupManager->GetMeshGroupX("TestFolder", "Camera_view_2.X", MESH_OBJECT);
 
 	m_pCamera = pCamera;
 	RECT rc;
@@ -118,7 +118,7 @@ void cCameraTest::Render(LPD3DXSPRITE pSprite)
 	g_pD3DDevice->SetTransform(D3DTS_VIEW, &orgView);
 	//스프라이트가 먼저 그려지면 투명도가 적용되지 않는다 따라서 얘네들은 투명도가 적용되게 그려놓고
 	//나머지 애들은 투명도 제한다.
-	m_pImage->Render(pSprite);
+	m_pImage->Render();
 
 
 	if (m_pCharacterTest)
@@ -176,29 +176,18 @@ void cCameraTest::ControlTestCamera()
 			m_vLookAt.y = 20.f;
 	}
 	else if (g_pKeyManager->IsStayKeyDown('L'))
-
 	{
 		m_vLookAt.y -= 0.03f;
 		if (m_vLookAt.y < -10.f)
 			m_vLookAt.y = -10.f;
 	}
-
-
-
 }
 
 void cCameraTest::RenderCamera()
 {
 	if (!m_pCamera)
 		return;
-
 	D3DXMATRIX matS;
 	D3DXMatrixScaling(&matS, 0.8f, 0.8f, 0.8f);
-
-
-
 	m_pCameraMesh->Render( &(matS *m_pCamera->GetMatCameraWorld()));
-
-
-
 }

@@ -44,11 +44,18 @@ public:
 private:
 	
 	CHARACTER_STATE state;
-	cCamera* m_pCamera;
+	//cCamera* m_pCamera;
+
+
+
 public:
-	void Setup();
-	void SetCamera(cCamera* pCamera);
-	void Update(iMap* pMap);
+	//void Setup();
+	//void SetCamera(cCamera* pCamera);
+//	void Update(iMap* pMap);
+
+	void Setup(char* szFolder, char* szFile, float fScale = 0.03f);
+
+	void Update();
 	void Render();
 	virtual D3DXVECTOR3& GetPosition();
 };
