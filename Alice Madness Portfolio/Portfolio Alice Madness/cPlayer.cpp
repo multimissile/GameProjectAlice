@@ -6,13 +6,21 @@
 //바운딩박스로 추가
 #include "cBoundingBox.h"
 
+#define FLOAT_JUMPSTR 1.0
+#define FLOAT_GRAVITY 0.1
+#define FLOAT_MOVESPEED 0.2f
+
 cPlayer::cPlayer():state(CHARACTER_Idle)//, m_pCamera(NULL)
 {
 	m_fRotationY = 0.0f;
 	m_pSkinnedMesh = NULL;
 	m_vPosition = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_vDirection = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+	fJumpStr = FLOAT_JUMPSTR;
 	D3DXMatrixIdentity(&m_matWorld);
+	isDash = false;
+	isJump = false;
+	fRunSpeed = FLOAT_MOVESPEED;
 }
 
 
@@ -173,7 +181,7 @@ void cPlayer::Update()
 	D3DXMATRIXA16 matR, matT;
 
 	//m_pMap = pMap;
-	float fmoveSpeed = 0.5f;
+	
 	D3DXVECTOR3 vPosition = m_vPosition;
 
 
@@ -191,8 +199,15 @@ void cPlayer::Update()
 	D3DXVECTOR3 RCameraDir;
 	D3DXVec3TransformNormal(&RCameraDir, &CameraDir, &matR);
 
+	D3DXMatrixRotationY(&matR, 80);
+	D3DXVECTOR3 Direction90;
+	D3DXVec3TransformNormal(&Direction90, &m_vDirection, &matR);
+
 	float fDotL = D3DXVec3Dot(&LCameraDir, &m_vDirection);
 	float fDotR = D3DXVec3Dot(&RCameraDir, &m_vDirection);
+
+	/*LDirection = (LCameraDir + LDirection) / 2;
+	RDirection = (RCameraDir + RDirection) / 2;*/
 
 	if (abs(fDotL - fDotR) > 0.2f) {
 		if (fDotL <= fDotR) {
@@ -203,29 +218,42 @@ void cPlayer::Update()
 		}
 	}
 
-	/*if (g_pKeyManager->IsStayKeyDown('A'))
+	if (g_pKeyManager->IsOnceKeyDown(VK_SHIFT)) {
+		isDash = true;
+	}
+	if (g_pKeyManager->IsOnceKeyUp(VK_SHIFT)) {
+		isDash = false;
+	}
+	if (g_pKeyManager->IsStayKeyDown('A'))
 	{
-	//state = CHARACTER_Idle;
-
-	m_fRotY -= 0.1f;
+		ChangeState(CHARACTER_cStarfL);
+		vPosition += Direction90 * FLOAT_MOVESPEED;
 	}
 	else if (g_pKeyManager->IsStayKeyDown('D'))
 	{
-	//state = CHARACTER_Idle;
-
-	m_fRotY += 0.1f;
-	}*/
+		ChangeState(CHARACTER_cStartfR);
+		vPosition -= Direction90 * FLOAT_MOVESPEED;
+	}
 
 	//움직임 테스트와 키 테스트
-	if (g_pKeyManager->IsStayKeyDown('W'))
+	else if (g_pKeyManager->IsStayKeyDown('W'))
 	{
-
-		if (state != CHARACTER_Alice_Walk)
-		{
-			state = CHARACTER_Alice_Walk;
-			m_pSkinnedMesh->SetAnimationIndexBlend(state);
+		float fSpeed;
+		CHARACTER_STATE st;
+		if (isDash) {
+			if (fRunSpeed < FLOAT_MOVESPEED*2) {
+				fRunSpeed += 0.01f;
+			}
+			fSpeed = fRunSpeed;
+			st = CHARACTER_Run;
 		}
-		vPosition += m_vDirection * fmoveSpeed;
+		else {
+			fRunSpeed = 0.2f;
+			fSpeed = FLOAT_MOVESPEED;
+			st = CHARACTER_Alice_Walk;
+		}
+		ChangeState(st);
+		vPosition += m_vDirection * fSpeed;
 
 
 
@@ -239,32 +267,59 @@ void cPlayer::Update()
 
 	else if (g_pKeyManager->IsStayKeyDown('S'))
 	{
+		ChangeState((CHARACTER_STATE)10);
 
-		if (state != (CHARACTER_STATE)10)
-		{
-			state = (CHARACTER_STATE)10;
-
-			m_pSkinnedMesh->SetAnimationIndexBlend(state);
-		}
-
-		vPosition -= m_vDirection * fmoveSpeed;
+		vPosition -= m_vDirection * FLOAT_MOVESPEED;
 	}
 
 	else if (state != CHARACTER_Idle)
 	{
 		{
-			state = CHARACTER_Idle;
+			//state = CHARACTER_Idle;
 			//트랙포지션이 0 부터 시작해야하므로 SetAnimationIndexBlend 를 사용하여 트랙포지션을 0으로 만듦과 동시에
 			// 이전 애니메이션에서 현재애니메이션으로 넘어오는것이 어색하지 않도록 blend
-			m_pSkinnedMesh->SetAnimationIndexBlend(state);
+			//m_pSkinnedMesh->SetAnimationIndexBlend(state);
+			ChangeState(CHARACTER_Idle);
 		}
 
 	}
 
+	//점프 부분
+	if (isJump) {
+		//등가속운동
+		fJumpStr -= FLOAT_GRAVITY;
+		if (fJumpStr >= 0) {
+			ChangeState(CHARACTER_Jump_Start);
+		}
+		else {
+			ChangeState(CHARACTER_Jump_Fall);
+		}
+
+		vPosition += D3DXVECTOR3(0, 1, 0)*fJumpStr;
+
+		//if (g_pGameManager->)
+		if (fJumpStr <= -FLOAT_JUMPSTR) {
+			isJump = false;
+		}
+	}
+	else {
+		fJumpStr = FLOAT_JUMPSTR;
+	}
+
+
+	if (g_pKeyManager->IsOnceKeyDown(VK_SPACE)) {
+		isJump = true;
+	}
+
 //>>: 맵높이 gameManager 에서 바로 가져올 수 있도록 수정
 	//이동
-	if (g_pGameManager->GetHeight(vPosition.x, vPosition.y, vPosition.z)) {
+	if (isJump) {
 		m_vPosition = vPosition;
+	}
+	else {
+		if (g_pGameManager->GetHeight(vPosition.x, vPosition.y, vPosition.z)) {
+			m_vPosition = vPosition;
+		}
 	}
 //<<
 
@@ -305,3 +360,12 @@ D3DXVECTOR3& cPlayer::GetPosition()
 {
 	return m_vPosition;
 }
+
+void cPlayer::ChangeState(CHARACTER_STATE ALICE_STATE) {
+	if (state != ALICE_STATE)
+	{
+		state = ALICE_STATE;
+		m_pSkinnedMesh->SetAnimationIndexBlend(state);
+	}
+}
+

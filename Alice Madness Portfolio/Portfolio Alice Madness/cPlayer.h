@@ -42,7 +42,10 @@ public:
 	~cPlayer();
 
 private:
-	
+	bool isDash;
+	bool isJump;
+	float fRunSpeed;
+	float fJumpStr;
 	CHARACTER_STATE state;
 	//cCamera* m_pCamera;
 
@@ -58,5 +61,6 @@ public:
 	void Update();
 	void Render();
 	virtual D3DXVECTOR3& GetPosition();
+	void ChangeState(CHARACTER_STATE ALICE_STATE);
 };
 
