@@ -187,7 +187,7 @@ void cPlayer::Update()
 
 //>>:카메라 전역으로 수정
 	//카메라 돌면 캐릭터도 돌게 설정
-	D3DXVECTOR3 CameraDir = this->GetPosition() - g_pCamera->vGetEye();
+	D3DXVECTOR3 CameraDir = this->GetPosition() - *g_pCam->GetEye();
 	CameraDir.y = 0.0f;
 	D3DXVec3Normalize(&CameraDir, &CameraDir);
 

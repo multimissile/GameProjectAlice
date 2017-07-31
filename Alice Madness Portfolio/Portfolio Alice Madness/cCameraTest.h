@@ -42,6 +42,7 @@ public:
 	cCameraTest();
 	~cCameraTest();
 
+	void Setup();
 	void Setup(cCamera* pCamera);
 	void Update();
 	void Render(LPD3DXSPRITE pSprite);

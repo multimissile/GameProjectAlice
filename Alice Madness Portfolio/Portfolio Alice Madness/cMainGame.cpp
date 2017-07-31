@@ -40,7 +40,7 @@ cMainGame::~cMainGame()
 
 void cMainGame::Setup()
 {
-	g_pCamera->Setup();
+	//g_pCamera->Setup();
 
 	g_pSPrintDevice->SetFontStyle(FONT_DAEHAN_40_B);
 	//조명켜기
@@ -70,7 +70,7 @@ void cMainGame::Setup()
 
 void cMainGame::Update()
 {
-	g_pCamera->Update();
+	//g_pCamera->Update();
 	g_pTimeManager->Update();
 
 	//if (m_pCamera)
@@ -111,6 +111,9 @@ void cMainGame::Render()
 	sprintf(str, "%d", g_pTimeManager->GetFPS());
 	g_pSPrintDevice->PrintStr( str, 100, 100, 100, 100);
 
+	sprintf(str, "EYE: %.3f, %.3f, %.3f", g_pCam->GetEye()->x, g_pCam->GetEye()->y, g_pCam->GetEye()->z );
+	g_pSPrintDevice->PrintStr(str, 100, 200, 600, 100);
+
 	//그리기종료
 	g_pD3DDevice->EndScene();
 
@@ -122,7 +125,8 @@ void cMainGame::Render()
 void cMainGame::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	//if (m_pCamera)
-	g_pCamera->WndProc(hWnd, message, wParam, lParam);
+	//g_pCamera->WndProc(hWnd, message, wParam, lParam);
+	//g_pCam->WndProc(hWnd, message, wParam, lParam);
 
 	switch (message)
 	{

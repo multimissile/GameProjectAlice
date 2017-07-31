@@ -15,6 +15,7 @@ WCHAR szWindowClass[MAX_LOADSTRING];            //기본 창 클래스 이름
 HWND g_hWnd;									//현재 윈도우 
 bool g_bLButtonDown = false;
 bool g_bRButtonDown = false;
+
 /////////////////////////////////
 
 /////////////////////////////////주 게임처리 클래스

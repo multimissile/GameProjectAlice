@@ -39,6 +39,7 @@ cWonderLand::~cWonderLand()
 void cWonderLand::Setup()
 {
 	g_pGameManager->LoadGame(NULL, NULL);
+	g_pCam->SetupCam(15.f);
 }
 
 //void cWonderLand::Setup(cCamera* pCamera)
@@ -77,6 +78,7 @@ void cWonderLand::Setup()
 void cWonderLand::Update()
 {
 	g_pGameManager->Update();
+	g_pCam->Update();
 //	if (!vecPchar.empty()) {
 //		for each(auto p  in vecPchar)
 //		{

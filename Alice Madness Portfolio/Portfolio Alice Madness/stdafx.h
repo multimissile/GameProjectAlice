@@ -38,6 +38,7 @@ using namespace Util;
 //전역변수
 extern HWND g_hWnd;
 extern bool g_bLButtonDown;
+extern DWORD g_Mouse;
 
 //윈도우 스타일정의 매크로
 #define WINDSTYLE (WS_OVERLAPPED | \
@@ -104,3 +105,4 @@ static class_name* GetInstance()\
 #include "cSPrintDevice.h"
 #include "cCamera.h"
 #include "cGameManager.h"
+#include "cCam.h"

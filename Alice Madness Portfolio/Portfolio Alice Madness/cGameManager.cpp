@@ -44,14 +44,15 @@ void cGameManager::LoadGame(const char * szFolder, const char * szFile)
 	m_pPlayer = new cPlayer;
 	m_pPlayer->Setup("TestFolder", "alice_knife.X");
 
-	g_pCamera->SetPosition(&(m_pPlayer->GetBounding()->GetCenterPosition()));
+	//g_pCamera->SetPosition(&(m_pPlayer->GetBounding()->GetCenterPosition()));
+	g_pCam->SetTarget(&(m_pPlayer->GetBounding()->GetCenterPosition()));
 }
 
 
 void cGameManager::DestroyGame()
 {
 	m_bGame = false;
-	g_pCamera->SetPosition(NULL);
+	g_pCam->SetTarget(NULL);
 	
 	SAFE_DELETE(m_pTerrain);
 
