@@ -59,6 +59,10 @@ public:
 	void SetAnimationIndex(int nIndex);		
 	void SetAnimationIndexBlend(int nIndex);
 	bool GetCurrentAnimationEnd();
+	
+//Enemy 에서 사용한 함수 추가
+	LPD3DXANIMATIONCONTROLLER& GetAniController() { return m_pAnimController; }
+
 private:
 	cSkinnedMesh();
 	void Load(char* szFolder, char* szFilename);	//SkinnedMeshManager가 불러줌

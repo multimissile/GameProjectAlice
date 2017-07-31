@@ -1,0 +1,13 @@
+attack		0	60
+attack_setal	60	90
+falling		90	105
+idle		105	141
+idle_dead_1	141	231
+idle_dead_2	231	316
+jump		316	346
+spawn		346	386
+turn_lft	386	416
+turn_lft45	416	452
+turn_rgt	452	482
+turn_rgt45	482	518
+walk		518	548

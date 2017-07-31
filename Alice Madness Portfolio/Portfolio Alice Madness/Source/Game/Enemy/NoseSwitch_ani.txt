@@ -1,0 +1,20 @@
+fly_action	0	60
+fly_charge_1	60	100
+fly_charge_2	100	130
+fly_charge_3	130	150
+fly_charge_4	150	158
+fly_charge_5	158	164
+fly_disappear	164	204
+fly_idle_1	204	349
+fly_idle_2	349	409
+fly_relax	409	429
+		
+mount_action	429	489
+mount_charge_1	489	529
+mount_charge_2	529	559	
+mount_charge_3	559	579
+mount_charge_4	579	585
+mount_charge_5	585	593
+mount_disappear	593	633
+mount_idle	633	693
+mount_relax	693	753	
