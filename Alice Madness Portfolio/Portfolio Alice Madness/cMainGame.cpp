@@ -128,11 +128,6 @@ void cMainGame::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	//g_pCamera->WndProc(hWnd, message, wParam, lParam);
 	//g_pCam->WndProc(hWnd, message, wParam, lParam);
 
-	switch (message)
-	{
-		
-	}
-
 }
 
 void cMainGame::SetLight()

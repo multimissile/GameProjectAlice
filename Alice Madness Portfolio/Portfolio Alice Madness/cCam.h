@@ -86,7 +86,6 @@ public:
 	 //카메라 좌표계의 각 축의 방향으로 dist만큼 이동한다
 	 D3DXMATRIXA16* MoveLocalX(float dist);
 	 D3DXMATRIXA16* MoveLocalY(float dist);
-	 D3DXMATRIXA16* MoveLocalZ(float dist);
 
 public:
 	void ControlRotation();
