@@ -1,0 +1,10 @@
+Attack		0	6
+Damage		6	16
+Leeching	16	56
+Leeching_attach	56	62
+Leeching_detach	62	96
+Sprint		96	102
+Strafe_L	102	118
+Strafe_R	118	134
+Walk_1		134	142
+Walk_2		142	190
