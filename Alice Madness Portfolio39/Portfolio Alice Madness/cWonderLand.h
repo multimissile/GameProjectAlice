@@ -30,6 +30,7 @@ public:
 	void Update();
 	void Render();
 
+	//void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	//void Setup(cCamera* pCamera);
 
 	//void ControlCamera();

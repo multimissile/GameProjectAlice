@@ -42,6 +42,7 @@ public:
 	~cPlayer();
 
 private:
+	bool IsIdle;
 	bool isDash;
 	bool isJump;
 	float fRunSpeed;
@@ -62,5 +63,6 @@ public:
 	void Render();
 	virtual D3DXVECTOR3& GetPosition();
 	void ChangeState(CHARACTER_STATE ALICE_STATE);
+	void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 };
 

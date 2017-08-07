@@ -398,14 +398,19 @@ bool cSkinnedMesh::GetCurrentAnimationEnd()
 	m_pAnimController->GetTrackDesc(0, &stTrackDesc);
 
 
-
+ 	if (stTrackDesc.Position > stTrackDesc.Weight) {
+		return true;
+	}
+	else {
+		return false;
+	}
 	//ZZZif (0)
 	//ZZZ{
 	//ZZZ	m_pAnimController->
 	//ZZZ
 	//ZZZ		return ture;
 	//ZZZ}
-	return false;
+	//return false;
 }
 
 void cSkinnedMesh::Destroy()

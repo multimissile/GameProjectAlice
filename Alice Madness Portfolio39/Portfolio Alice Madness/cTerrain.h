@@ -38,7 +38,7 @@ public:
 	void Render();
 
 	bool GetHeight(IN float& x, _Inout_ float& y, IN float& z);
-	bool GetPlayerCollision();
+	bool GetPlayerCollision(D3DXVECTOR3 vPosition);
 
 //	int testTileX, testTileZ;
 //	int testIdx;

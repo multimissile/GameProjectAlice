@@ -212,7 +212,16 @@ bool cTerrain::GetHeight(IN float & x, float & y, IN float& z)
 	return false;
 }
 
-bool cTerrain::GetPlayerCollision()
+bool cTerrain::GetPlayerCollision(D3DXVECTOR3 vPosition)
 {
-	return false;
+	float fX = vPosition.x;
+	float fY;
+	float fZ = vPosition.z;
+	this->GetHeight(fX,fY,fZ);
+	if (fY < vPosition.y) {
+		return false;
+	}
+	else {
+		return true;
+	}
 }

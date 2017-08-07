@@ -57,6 +57,7 @@ public:
 	cBounding* GetPlayerBounding();
 	void DeleteItem(cItemObject* pThis);
 
-
+	bool GetPlayerColllisionGround(D3DXVECTOR3 vPosition);
+	void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 };
 

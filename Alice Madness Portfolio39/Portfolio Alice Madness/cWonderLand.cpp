@@ -159,6 +159,10 @@ void cWonderLand::Render()
 
 
 }
+/*void cWonderLand::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	g_pGameManager->WndProc((hWnd, message, wParam, lParam);
+}*/
 //
 //void cWonderLand::ControlCamera()
 //{

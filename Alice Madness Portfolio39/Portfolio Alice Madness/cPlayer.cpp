@@ -6,7 +6,7 @@
 //바운딩박스로 추가
 #include "cBoundingBox.h"
 
-#define FLOAT_JUMPSTR 1.0
+#define FLOAT_JUMPSTR 1.5
 #define FLOAT_GRAVITY 0.1
 #define FLOAT_MOVESPEED 0.2f
 
@@ -20,6 +20,7 @@ cPlayer::cPlayer():state(CHARACTER_Idle)//, m_pCamera(NULL)
 	D3DXMatrixIdentity(&m_matWorld);
 	isDash = false;
 	isJump = false;
+	IsIdle = true;
 	fRunSpeed = FLOAT_MOVESPEED;
 }
 
@@ -274,12 +275,40 @@ void cPlayer::Update()
 
 	else if (state != CHARACTER_Idle)
 	{
+		if(IsIdle)
 		{
 			//state = CHARACTER_Idle;
 			//트랙포지션이 0 부터 시작해야하므로 SetAnimationIndexBlend 를 사용하여 트랙포지션을 0으로 만듦과 동시에
 			// 이전 애니메이션에서 현재애니메이션으로 넘어오는것이 어색하지 않도록 blend
 			//m_pSkinnedMesh->SetAnimationIndexBlend(state);
 			ChangeState(CHARACTER_Idle);
+		}
+		else {
+			if (m_pSkinnedMesh->GetCurrentAnimationEnd()) {
+				switch(state) {
+				case CHARACTER_attack1: {
+					//IsIdle = true;
+					ChangeState(CHARACTER_attack1f);
+					break;
+				}
+				case CHARACTER_attack1f: {
+					IsIdle = true;
+					ChangeState(CHARACTER_attack2);
+					break;
+				}
+				case CHARACTER_attack2: {
+					IsIdle = true;
+					ChangeState(CHARACTER_attack2f);
+					break;
+				}
+				case CHARACTER_attack2f: {
+					IsIdle = true;
+					ChangeState(CHARACTER_attack3);
+					break;
+				}
+				}
+				
+			}
 		}
 
 	}
@@ -293,14 +322,19 @@ void cPlayer::Update()
 		}
 		else {
 			ChangeState(CHARACTER_Jump_Fall);
+			if (state == CHARACTER_Jump_Fall && m_pSkinnedMesh->GetCurrentAnimationEnd()) {
+				ChangeState(CHARACTER_Jump_Land);
+			}
 		}
 
 		vPosition += D3DXVECTOR3(0, 1, 0)*fJumpStr;
 
-		//if (g_pGameManager->)
-		if (fJumpStr <= -FLOAT_JUMPSTR) {
+		if (g_pGameManager->GetPlayerColllisionGround(vPosition)) {
 			isJump = false;
 		}
+		/*if (fJumpStr <= -FLOAT_JUMPSTR) {
+			isJump = false;
+		}*/
 	}
 	else {
 		fJumpStr = FLOAT_JUMPSTR;
@@ -366,6 +400,19 @@ void cPlayer::ChangeState(CHARACTER_STATE ALICE_STATE) {
 	{
 		state = ALICE_STATE;
 		m_pSkinnedMesh->SetAnimationIndexBlend(state);
+	}
+}
+
+void cPlayer::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{ 
+	switch (message)
+	{
+		case WM_LBUTTONDOWN:
+		{
+			IsIdle = false;
+			ChangeState(CHARACTER_attack1);
+			break;
+		}
 	}
 }
 
