@@ -6,7 +6,7 @@
 //바운딩박스로 추가
 #include "cBoundingBox.h"
 
-#define FLOAT_JUMPSTR 1.5
+#define FLOAT_JUMPSTR 1.75
 #define FLOAT_GRAVITY 0.1
 #define FLOAT_MOVESPEED 0.2f
 
@@ -21,6 +21,7 @@ cPlayer::cPlayer():state(CHARACTER_Idle)//, m_pCamera(NULL)
 	isDash = false;
 	isJump = false;
 	IsIdle = true;
+	isUp1 = false;
 	fRunSpeed = FLOAT_MOVESPEED;
 }
 
@@ -285,7 +286,7 @@ void cPlayer::Update()
 			st = CHARACTER_Idle;
 		}
 		else {
-			if (m_pSkinnedMesh->GetCurrentAnimationEnd()) {
+			if (m_pSkinnedMesh->GetCurrentAnimationEnd(state)) {
 				switch(state) {
 				/*case CHARACTER_attack1: {
 					//IsIdle = true;
@@ -316,16 +317,26 @@ void cPlayer::Update()
 		//등가속운동
 		fJumpStr -= FLOAT_GRAVITY;
 		if (fJumpStr >= 0) {
-			st = CHARACTER_Jump_Start;
+			bool IsEnd = m_pSkinnedMesh->GetCurrentAnimationEnd(state);
+			if (state == CHARACTER_Jump_Start && m_pSkinnedMesh->GetCurrentAnimationEnd(state)) {
+				isUp1 = false;
+			}
+			if (isUp1) {
+				st = CHARACTER_Jump_Start;
+			}
+			else {
+				st = CHARACTER_Idle;
+			}
+			
 		}
 		else {
 			st = CHARACTER_Jump_Fall;
-			if (state == CHARACTER_Jump_Fall && m_pSkinnedMesh->GetCurrentAnimationEnd()) {
+			if (state == CHARACTER_Jump_Fall && m_pSkinnedMesh->GetCurrentAnimationEnd(state)) {
 				st = CHARACTER_Jump_Land;
 			}
 		}
 
-		vPosition += D3DXVECTOR3(0, 1, 0)*fJumpStr;
+		vPosition += D3DXVECTOR3(0, 0.3f, 0)*fJumpStr;
 
 		if (g_pGameManager->GetPlayerColllisionGround(vPosition)) {
 			isJump = false;
@@ -341,6 +352,7 @@ void cPlayer::Update()
 
 	if (g_pKeyManager->IsOnceKeyDown(VK_SPACE)) {
 		isJump = true;
+		isUp1 = true;
 	}
 
 //>>: 맵높이 gameManager 에서 바로 가져올 수 있도록 수정

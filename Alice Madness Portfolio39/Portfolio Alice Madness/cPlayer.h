@@ -45,6 +45,7 @@ private:
 	bool IsIdle;
 	bool isDash;
 	bool isJump;
+	bool isUp1;
 	float fRunSpeed;
 	float fJumpStr;
 	CHARACTER_STATE state;

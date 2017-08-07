@@ -390,15 +390,26 @@ void cSkinnedMesh::SetAnimationIndexBlend(int nIndex)
 	SAFE_RELEASE(pNextAnimSet);
 }
 
-bool cSkinnedMesh::GetCurrentAnimationEnd()
+bool cSkinnedMesh::GetCurrentAnimationEnd(int nowState)
 {
 	LPD3DXANIMATIONSET pCurAnimSet = NULL;
 
-	D3DXTRACK_DESC stTrackDesc;
-	m_pAnimController->GetTrackDesc(0, &stTrackDesc);
+	D3DXTRACK_DESC pDesc;
+	LPD3DXANIMATIONSET ani;
+	m_pAnimController->GetAnimationSet(nowState, &ani);
+	double maxTime = ani->GetPeriod();
+	m_pAnimController->GetTrackDesc(0, &pDesc);
+	double time=m_pAnimController->GetTime();
+	int maxnumanimationouput = m_pAnimController->GetMaxNumAnimationOutputs();
+	int maxNumAnimationSets = m_pAnimController->GetMaxNumAnimationSets();
+	int maxNumEvents = m_pAnimController->GetMaxNumEvents();
+	int maxNumTracks = m_pAnimController->GetMaxNumTracks();
+	int NumAnimationSets = m_pAnimController->GetNumAnimationSets();
+	float priorityBlend=m_pAnimController->GetPriorityBlend();
 
 
- 	if (stTrackDesc.Position > stTrackDesc.Weight/2) {
+
+ 	if (pDesc.Position >= maxTime - 0.032) {
 		return true;
 	}
 	else {
