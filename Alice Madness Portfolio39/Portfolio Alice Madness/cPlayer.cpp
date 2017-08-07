@@ -186,6 +186,9 @@ void cPlayer::Update()
 	D3DXVECTOR3 vPosition = m_vPosition;
 
 
+	//캐릭터 스테이트 바뀔때 애니메이션 연결안돼서 따로 지정
+	CHARACTER_STATE st = state;
+
 //>>:카메라 전역으로 수정
 	//카메라 돌면 캐릭터도 돌게 설정
 	D3DXVECTOR3 CameraDir = this->GetPosition() - g_pCamera->vGetEye();
@@ -227,12 +230,12 @@ void cPlayer::Update()
 	}
 	if (g_pKeyManager->IsStayKeyDown('A'))
 	{
-		ChangeState(CHARACTER_cStarfL);
+		st = CHARACTER_cStarfL;
 		vPosition += Direction90 * FLOAT_MOVESPEED;
 	}
 	else if (g_pKeyManager->IsStayKeyDown('D'))
 	{
-		ChangeState(CHARACTER_cStartfR);
+		st = CHARACTER_cStartfR;
 		vPosition -= Direction90 * FLOAT_MOVESPEED;
 	}
 
@@ -240,7 +243,6 @@ void cPlayer::Update()
 	else if (g_pKeyManager->IsStayKeyDown('W'))
 	{
 		float fSpeed;
-		CHARACTER_STATE st;
 		if (isDash) {
 			if (fRunSpeed < FLOAT_MOVESPEED*2) {
 				fRunSpeed += 0.01f;
@@ -268,8 +270,7 @@ void cPlayer::Update()
 
 	else if (g_pKeyManager->IsStayKeyDown('S'))
 	{
-		ChangeState((CHARACTER_STATE)10);
-
+		st = (CHARACTER_STATE)10;
 		vPosition -= m_vDirection * FLOAT_MOVESPEED;
 	}
 
@@ -281,12 +282,12 @@ void cPlayer::Update()
 			//트랙포지션이 0 부터 시작해야하므로 SetAnimationIndexBlend 를 사용하여 트랙포지션을 0으로 만듦과 동시에
 			// 이전 애니메이션에서 현재애니메이션으로 넘어오는것이 어색하지 않도록 blend
 			//m_pSkinnedMesh->SetAnimationIndexBlend(state);
-			ChangeState(CHARACTER_Idle);
+			st = CHARACTER_Idle;
 		}
 		else {
 			if (m_pSkinnedMesh->GetCurrentAnimationEnd()) {
 				switch(state) {
-				case CHARACTER_attack1: {
+				/*case CHARACTER_attack1: {
 					//IsIdle = true;
 					ChangeState(CHARACTER_attack1f);
 					break;
@@ -295,22 +296,19 @@ void cPlayer::Update()
 					IsIdle = true;
 					ChangeState(CHARACTER_attack2);
 					break;
-				}
+				}*/
 				case CHARACTER_attack2: {
-					IsIdle = true;
-					ChangeState(CHARACTER_attack2f);
+					st = CHARACTER_attack2f;
 					break;
 				}
 				case CHARACTER_attack2f: {
 					IsIdle = true;
-					ChangeState(CHARACTER_attack3);
+					//ChangeState(CHARACTER_attack3);
 					break;
 				}
 				}
-				
 			}
 		}
-
 	}
 
 	//점프 부분
@@ -318,12 +316,12 @@ void cPlayer::Update()
 		//등가속운동
 		fJumpStr -= FLOAT_GRAVITY;
 		if (fJumpStr >= 0) {
-			ChangeState(CHARACTER_Jump_Start);
+			st = CHARACTER_Jump_Start;
 		}
 		else {
-			ChangeState(CHARACTER_Jump_Fall);
+			st = CHARACTER_Jump_Fall;
 			if (state == CHARACTER_Jump_Fall && m_pSkinnedMesh->GetCurrentAnimationEnd()) {
-				ChangeState(CHARACTER_Jump_Land);
+				st = CHARACTER_Jump_Land;
 			}
 		}
 
@@ -356,7 +354,8 @@ void cPlayer::Update()
 		}
 	}
 //<<
-
+	//애니메이션 출력
+	ChangeState(st);
 
 	//선회
 
@@ -410,7 +409,11 @@ void cPlayer::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case WM_LBUTTONDOWN:
 		{
 			IsIdle = false;
-			ChangeState(CHARACTER_attack1);
+			//ChangeState(CHARACTER_attack1);
+			//ChangeState(CHARACTER_attack1f);
+			ChangeState(CHARACTER_attack2);
+			//ChangeState(CHARACTER_attack2f);
+			//ChangeState(CHARACTER_attack3);		
 			break;
 		}
 	}

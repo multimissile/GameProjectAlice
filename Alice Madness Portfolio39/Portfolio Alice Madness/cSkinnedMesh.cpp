@@ -398,7 +398,7 @@ bool cSkinnedMesh::GetCurrentAnimationEnd()
 	m_pAnimController->GetTrackDesc(0, &stTrackDesc);
 
 
- 	if (stTrackDesc.Position > stTrackDesc.Weight) {
+ 	if (stTrackDesc.Position > stTrackDesc.Weight/2) {
 		return true;
 	}
 	else {
