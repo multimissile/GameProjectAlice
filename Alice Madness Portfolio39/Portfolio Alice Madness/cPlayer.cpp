@@ -348,7 +348,7 @@ void cPlayer::Update()
 	}
 
 
-	if (g_pKeyManager->IsOnceKeyDown(VK_SPACE)) {
+	if (g_pKeyManager->IsOnceKeyDown(VK_SPACE) && !isAttack) {
 		isJump = true;
 		isUp1 = true;
 	}
