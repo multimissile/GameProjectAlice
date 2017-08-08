@@ -20,7 +20,7 @@ cPlayer::cPlayer():state(CHARACTER_Idle)//, m_pCamera(NULL)
 	D3DXMatrixIdentity(&m_matWorld);
 	isDash = false;
 	isJump = false;
-	IsIdle = true;
+	isAttack = false;
 	isUp1 = false;
 	fRunSpeed = FLOAT_MOVESPEED;
 }
@@ -229,7 +229,33 @@ void cPlayer::Update()
 	if (g_pKeyManager->IsOnceKeyUp(VK_SHIFT)) {
 		isDash = false;
 	}
-	if (g_pKeyManager->IsStayKeyDown('A'))
+
+	if (isAttack) {
+		if (m_pSkinnedMesh->GetCurrentAnimationEnd(state)) {
+			switch (state) {
+				/*case CHARACTER_attack1: {
+				//IsIdle = true;
+				ChangeState(CHARACTER_attack1f);
+				break;
+				}
+				case CHARACTER_attack1f: {
+				IsIdle = true;
+				ChangeState(CHARACTER_attack2);
+				break;
+				}*/
+				case CHARACTER_attack2: {
+					st = CHARACTER_attack2f;
+					break;
+				}
+				case CHARACTER_attack2f: {
+					isAttack = false;
+					//ChangeState(CHARACTER_attack3);
+					break;
+				}
+			}
+		}
+	}
+	else if (g_pKeyManager->IsStayKeyDown('A'))
 	{
 		st = CHARACTER_cStarfL;
 		vPosition += Direction90 * FLOAT_MOVESPEED;
@@ -277,39 +303,11 @@ void cPlayer::Update()
 
 	else if (state != CHARACTER_Idle)
 	{
-		if(IsIdle)
-		{
-			//state = CHARACTER_Idle;
-			//트랙포지션이 0 부터 시작해야하므로 SetAnimationIndexBlend 를 사용하여 트랙포지션을 0으로 만듦과 동시에
-			// 이전 애니메이션에서 현재애니메이션으로 넘어오는것이 어색하지 않도록 blend
-			//m_pSkinnedMesh->SetAnimationIndexBlend(state);
-			st = CHARACTER_Idle;
-		}
-		else {
-			if (m_pSkinnedMesh->GetCurrentAnimationEnd(state)) {
-				switch(state) {
-				/*case CHARACTER_attack1: {
-					//IsIdle = true;
-					ChangeState(CHARACTER_attack1f);
-					break;
-				}
-				case CHARACTER_attack1f: {
-					IsIdle = true;
-					ChangeState(CHARACTER_attack2);
-					break;
-				}*/
-				case CHARACTER_attack2: {
-					st = CHARACTER_attack2f;
-					break;
-				}
-				case CHARACTER_attack2f: {
-					IsIdle = true;
-					//ChangeState(CHARACTER_attack3);
-					break;
-				}
-				}
-			}
-		}
+		//state = CHARACTER_Idle;
+		//트랙포지션이 0 부터 시작해야하므로 SetAnimationIndexBlend 를 사용하여 트랙포지션을 0으로 만듦과 동시에
+		// 이전 애니메이션에서 현재애니메이션으로 넘어오는것이 어색하지 않도록 blend
+		//m_pSkinnedMesh->SetAnimationIndexBlend(state);
+		st = CHARACTER_Idle;
 	}
 
 	//점프 부분
@@ -420,7 +418,7 @@ void cPlayer::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		case WM_LBUTTONDOWN:
 		{
-			IsIdle = false;
+			isAttack = true;
 			//ChangeState(CHARACTER_attack1);
 			//ChangeState(CHARACTER_attack1f);
 			ChangeState(CHARACTER_attack2);

@@ -42,7 +42,7 @@ public:
 	~cPlayer();
 
 private:
-	bool IsIdle;
+	bool isAttack;
 	bool isDash;
 	bool isJump;
 	bool isUp1;
