@@ -250,9 +250,6 @@
     <ClInclude Include="cCam.h">
       <Filter>Camera</Filter>
     </ClInclude>
-    <ClInclude Include="cCamTest.h">
-      <Filter>TestCamera</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -410,9 +407,6 @@
     </ClCompile>
     <ClCompile Include="cCam.cpp">
       <Filter>Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="cCamTest.cpp">
-      <Filter>TestCamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

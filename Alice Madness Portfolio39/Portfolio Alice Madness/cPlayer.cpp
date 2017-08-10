@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "cPlayer.h"
+#include "cBoundingSphere.h"
 //#include "iMap.h"
 //#include "cCamera.h"
 

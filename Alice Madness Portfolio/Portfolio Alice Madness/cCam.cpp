@@ -3,9 +3,9 @@
 
 
 cCam::cCam()
-	: m_vEye(0,0,-m_fCamDistance), m_vLookAt(0,2,0), m_vUp(0,1,0)
+	: m_vEye(0,0,-1), m_vLookAt(0,0,0), m_vUp(0,1,0)
 	, m_vView(0,0,0), m_vAxisX(0,0,0)
-	, m_fCamDistance(0.f), m_pvTarget(NULL)
+	, m_fCamDistance(15.f), m_pvTarget(NULL)
 	, m_fCamRotX(0.f), m_fCamRotY(0.f)
 {
 	D3DXMatrixIdentity(&m_matView);
@@ -24,6 +24,8 @@ cCam::~cCam()
 
 void cCam::SetupCam(float camDst)
 {
+	m_fCamDistance = camDst;
+
 	// 월드 행렬 설정
 	D3DXMATRIXA16 matWorld;
 	D3DXMatrixIdentity(&matWorld);
@@ -83,12 +85,15 @@ D3DXMATRIXA16 * cCam::SetView(D3DXVECTOR3 * pvEye, D3DXVECTOR3 * pvLookat, D3DXV
 
 void cCam::Update()
 {
+	if (m_pvTarget)
+		m_vLookAt = *m_pvTarget;
+
 	{
 		this->RotateLocal(m_fCamRotX, m_fCamRotY);
 	}
 
 	{
-		this->ProcessKey();
+//		this->ProcessKey();
 		this->ProcessMouse();
 	}
 
@@ -106,11 +111,11 @@ D3DXMATRIXA16 * cCam::RotateLocal(float angleX, float angleY)
 	//회전 행렬 생성
 	D3DXMATRIXA16 matRot;
 
-	matRot = *D3DXMatrixRotationX(&D3DXMATRIXA16(), angleX) *
-		*D3DXMatrixRotationY(&D3DXMATRIXA16(), angleY);
+	matRot = * D3DXMatrixRotationX(&D3DXMATRIXA16(), angleX) *
+		* D3DXMatrixRotationY(&D3DXMATRIXA16(), angleY);
 
 	//눈에 적용
-	D3DXVec3TransformNormal(&m_vEye, &m_vEye, &matRot);
+	D3DXVec3TransformNormal(&m_vEye, &D3DXVECTOR3(0,0,1), &matRot);
 
 	m_vEye *= m_fCamDistance;
 	m_vEye += m_vLookAt;
@@ -222,37 +227,39 @@ void cCam::ProcessMouse()
 	int fDeltaY = (ptCurMouse.y - (rc.bottom - rc.top) / 2);
 
 	////주의
-	m_fCamRotY += (fDeltaY / 100.f);
 	m_fCamRotX += (fDeltaX / 100.f);
+	m_fCamRotY += (fDeltaY / 100.f);
 
 	//마우스 포인터 다시 중앙으로
 	SetCursorPos((rc.right - rc.left) / 2, (rc.bottom - rc.top) / 2);
 
-	m_ptPrevMouse = ptCurMouse;
+	//m_ptMouse = m_ptPrevMouse;
+
+	//m_ptPrevMouse = ptCurMouse;
 
 
-	//움직인양만큼 회전각에 추가한다.
-	if (m_ptMouse.x != m_ptPrevMouse.x)
-	{
-		if (m_ptMouse.x < m_ptPrevMouse.x)
-		{
-			m_fCamRotY -= 0.1f;
-		}
-		else
-			m_fCamRotY += 0.1f;
-	}
-
-	if (m_ptMouse.y != m_ptPrevMouse.y)
-	{
-		if (m_ptMouse.y < m_ptPrevMouse.y)
-		{
-			m_fCamRotX -= 0.1f;
-		}
-		else
-			m_fCamRotX += 0.1f;
-	}
-
-	m_ptMouse = m_ptPrevMouse;
+	////움직인양만큼 회전각에 추가한다.
+	//if (m_ptMouse.x != m_ptPrevMouse.x)
+	//{
+	//	if (m_ptMouse.x < m_ptPrevMouse.x)
+	//	{
+	//		m_fCamRotY -= 0.1f;
+	//	}
+	//	else
+	//		m_fCamRotY += 0.1f;
+	//}
+	//
+	//if (m_ptMouse.y != m_ptPrevMouse.y)
+	//{
+	//	if (m_ptMouse.y < m_ptPrevMouse.y)
+	//	{
+	//		m_fCamRotX -= 0.1f;
+	//	}
+	//	else
+	//		m_fCamRotX += 0.1f;
+	//}
+	//
+	//m_ptMouse = m_ptPrevMouse;
 }
 
 void cCam::ProcessKey()
