@@ -34,7 +34,7 @@ enum CHARACTER_STATE
 
 
 
-class cPlayer 
+class cPlayer
 	:public cCharacter
 {
 public:
@@ -42,8 +42,10 @@ public:
 	~cPlayer();
 
 private:
+	bool isAttack;
 	bool isDash;
 	bool isJump;
+	bool isUp1;
 	float fRunSpeed;
 	float fJumpStr;
 	CHARACTER_STATE state;
@@ -54,7 +56,7 @@ private:
 public:
 	//void Setup();
 	//void SetCamera(cCamera* pCamera);
-//	void Update(iMap* pMap);
+	//	void Update(iMap* pMap);
 
 	void Setup(char* szFolder, char* szFile, float fScale = 0.03f);
 
@@ -62,5 +64,6 @@ public:
 	void Render();
 	virtual D3DXVECTOR3& GetPosition();
 	void ChangeState(CHARACTER_STATE ALICE_STATE);
+	void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 };
 

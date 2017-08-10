@@ -285,3 +285,13 @@ void cGameManager::DeleteItem(cItemObject* pThis)
 	SAFE_DELETE(pThis);
 
 }
+
+bool cGameManager::GetPlayerColllisionGround(D3DXVECTOR3 vPosition)
+{
+	if (!m_bGame)
+		return false;
+
+	//일단은 terrain의 높이만 얻어오기
+	return m_pTerrain->GetPlayerCollision(vPosition);
+
+}

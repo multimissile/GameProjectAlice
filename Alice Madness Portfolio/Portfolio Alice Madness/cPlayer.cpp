@@ -6,11 +6,11 @@
 //바운딩박스로 추가
 #include "cBoundingBox.h"
 
-#define FLOAT_JUMPSTR 1.0
+#define FLOAT_JUMPSTR 1.75
 #define FLOAT_GRAVITY 0.1
 #define FLOAT_MOVESPEED 0.2f
 
-cPlayer::cPlayer():state(CHARACTER_Idle)//, m_pCamera(NULL)
+cPlayer::cPlayer() :state(CHARACTER_Idle)//, m_pCamera(NULL)
 {
 	m_fRotationY = 0.0f;
 	m_pSkinnedMesh = NULL;
@@ -20,6 +20,8 @@ cPlayer::cPlayer():state(CHARACTER_Idle)//, m_pCamera(NULL)
 	D3DXMatrixIdentity(&m_matWorld);
 	isDash = false;
 	isJump = false;
+	isAttack = false;
+	isUp1 = false;
 	fRunSpeed = FLOAT_MOVESPEED;
 }
 
@@ -181,13 +183,16 @@ void cPlayer::Update()
 	D3DXMATRIXA16 matR, matT;
 
 	//m_pMap = pMap;
-	
+
 	D3DXVECTOR3 vPosition = m_vPosition;
 
 
-//>>:카메라 전역으로 수정
+	//캐릭터 스테이트 바뀔때 애니메이션 연결안돼서 따로 지정
+	CHARACTER_STATE st = state;
+
+	//>>:카메라 전역으로 수정
 	//카메라 돌면 캐릭터도 돌게 설정
-	D3DXVECTOR3 CameraDir = this->GetPosition() - *g_pCam->GetEye();
+	D3DXVECTOR3 CameraDir = this->GetPosition() - g_pCamera->vGetEye();
 	CameraDir.y = 0.0f;
 	D3DXVec3Normalize(&CameraDir, &CameraDir);
 
@@ -224,14 +229,40 @@ void cPlayer::Update()
 	if (g_pKeyManager->IsOnceKeyUp(VK_SHIFT)) {
 		isDash = false;
 	}
-	if (g_pKeyManager->IsStayKeyDown('A'))
+
+	if (isAttack) {
+		if (m_pSkinnedMesh->GetCurrentAnimationEnd(state)) {
+			switch (state) {
+				/*case CHARACTER_attack1: {
+				//IsIdle = true;
+				ChangeState(CHARACTER_attack1f);
+				break;
+				}
+				case CHARACTER_attack1f: {
+				IsIdle = true;
+				ChangeState(CHARACTER_attack2);
+				break;
+				}*/
+			case CHARACTER_attack2: {
+				st = CHARACTER_attack2f;
+				break;
+			}
+			case CHARACTER_attack2f: {
+				isAttack = false;
+				//ChangeState(CHARACTER_attack3);
+				break;
+			}
+			}
+		}
+	}
+	else if (g_pKeyManager->IsStayKeyDown('A'))
 	{
-		ChangeState(CHARACTER_cStarfL);
+		st = CHARACTER_cStarfL;
 		vPosition += Direction90 * FLOAT_MOVESPEED;
 	}
 	else if (g_pKeyManager->IsStayKeyDown('D'))
 	{
-		ChangeState(CHARACTER_cStartfR);
+		st = CHARACTER_cStartfR;
 		vPosition -= Direction90 * FLOAT_MOVESPEED;
 	}
 
@@ -239,9 +270,8 @@ void cPlayer::Update()
 	else if (g_pKeyManager->IsStayKeyDown('W'))
 	{
 		float fSpeed;
-		CHARACTER_STATE st;
 		if (isDash) {
-			if (fRunSpeed < FLOAT_MOVESPEED*2) {
+			if (fRunSpeed < FLOAT_MOVESPEED * 2) {
 				fRunSpeed += 0.01f;
 			}
 			fSpeed = fRunSpeed;
@@ -267,21 +297,17 @@ void cPlayer::Update()
 
 	else if (g_pKeyManager->IsStayKeyDown('S'))
 	{
-		ChangeState((CHARACTER_STATE)10);
-
+		st = (CHARACTER_STATE)10;
 		vPosition -= m_vDirection * FLOAT_MOVESPEED;
 	}
 
 	else if (state != CHARACTER_Idle)
 	{
-		{
-			//state = CHARACTER_Idle;
-			//트랙포지션이 0 부터 시작해야하므로 SetAnimationIndexBlend 를 사용하여 트랙포지션을 0으로 만듦과 동시에
-			// 이전 애니메이션에서 현재애니메이션으로 넘어오는것이 어색하지 않도록 blend
-			//m_pSkinnedMesh->SetAnimationIndexBlend(state);
-			ChangeState(CHARACTER_Idle);
-		}
-
+		//state = CHARACTER_Idle;
+		//트랙포지션이 0 부터 시작해야하므로 SetAnimationIndexBlend 를 사용하여 트랙포지션을 0으로 만듦과 동시에
+		// 이전 애니메이션에서 현재애니메이션으로 넘어오는것이 어색하지 않도록 blend
+		//m_pSkinnedMesh->SetAnimationIndexBlend(state);
+		st = CHARACTER_Idle;
 	}
 
 	//점프 부분
@@ -289,29 +315,45 @@ void cPlayer::Update()
 		//등가속운동
 		fJumpStr -= FLOAT_GRAVITY;
 		if (fJumpStr >= 0) {
-			ChangeState(CHARACTER_Jump_Start);
+			bool IsEnd = m_pSkinnedMesh->GetCurrentAnimationEnd(state);
+			if (state == CHARACTER_Jump_Start && m_pSkinnedMesh->GetCurrentAnimationEnd(state)) {
+				isUp1 = false;
+			}
+			if (isUp1) {
+				st = CHARACTER_Jump_Start;
+			}
+			else {
+				st = CHARACTER_Idle;
+			}
+
 		}
 		else {
-			ChangeState(CHARACTER_Jump_Fall);
+			st = CHARACTER_Jump_Fall;
+			if (state == CHARACTER_Jump_Fall && m_pSkinnedMesh->GetCurrentAnimationEnd(state)) {
+				st = CHARACTER_Jump_Land;
+			}
 		}
 
-		vPosition += D3DXVECTOR3(0, 1, 0)*fJumpStr;
+		vPosition += D3DXVECTOR3(0, 0.3f, 0)*fJumpStr;
 
-		//if (g_pGameManager->)
-		if (fJumpStr <= -FLOAT_JUMPSTR) {
+		if (g_pGameManager->GetPlayerColllisionGround(vPosition)) {
 			isJump = false;
 		}
+		/*if (fJumpStr <= -FLOAT_JUMPSTR) {
+		isJump = false;
+		}*/
 	}
 	else {
 		fJumpStr = FLOAT_JUMPSTR;
 	}
 
 
-	if (g_pKeyManager->IsOnceKeyDown(VK_SPACE)) {
+	if (g_pKeyManager->IsOnceKeyDown(VK_SPACE) && !isAttack) {
 		isJump = true;
+		isUp1 = true;
 	}
 
-//>>: 맵높이 gameManager 에서 바로 가져올 수 있도록 수정
+	//>>: 맵높이 gameManager 에서 바로 가져올 수 있도록 수정
 	//이동
 	if (isJump) {
 		m_vPosition = vPosition;
@@ -321,8 +363,9 @@ void cPlayer::Update()
 			m_vPosition = vPosition;
 		}
 	}
-//<<
-
+	//<<
+	//애니메이션 출력
+	ChangeState(st);
 
 	//선회
 
@@ -334,7 +377,7 @@ void cPlayer::Update()
 	D3DXMatrixTranslation(&matT, m_vPosition.x, m_vPosition.y, m_vPosition.z);
 	m_matWorld = matR*matT;
 
-//>>:바운딩박스업데이트
+	//>>:바운딩박스업데이트
 	m_pBounding->Update(&m_matWorld);
 }
 void cPlayer::Render()
@@ -349,7 +392,7 @@ void cPlayer::Render()
 	//m_pSkinnedMesh->SetTransform((D3DXMATRIXA16*)&(matS * matR));
 	//m_pSkinnedMesh->SetTransform((D3DXMATRIXA16*)&(matS*m_matWorld));
 
-//>:scale 값은 skinnedmesh가 알아서 갖고 있도록 수정
+	//>:scale 값은 skinnedmesh가 알아서 갖고 있도록 수정
 	m_pSkinnedMesh->SetTransform((D3DXMATRIXA16*)&m_matWorld);
 
 	m_pSkinnedMesh->UpdateAndRender();
@@ -366,6 +409,23 @@ void cPlayer::ChangeState(CHARACTER_STATE ALICE_STATE) {
 	{
 		state = ALICE_STATE;
 		m_pSkinnedMesh->SetAnimationIndexBlend(state);
+	}
+}
+
+void cPlayer::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	switch (message)
+	{
+	case WM_LBUTTONDOWN:
+	{
+		isAttack = true;
+		//ChangeState(CHARACTER_attack1);
+		//ChangeState(CHARACTER_attack1f);
+		ChangeState(CHARACTER_attack2);
+		//ChangeState(CHARACTER_attack2f);
+		//ChangeState(CHARACTER_attack3);		
+		break;
+	}
 	}
 }
 
