@@ -295,3 +295,8 @@ bool cGameManager::GetPlayerColllisionGround(D3DXVECTOR3 vPosition)
 	return m_pTerrain->GetPlayerCollision(vPosition);
 
 }
+
+void cGameManager::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+	if (m_pPlayer)
+		m_pPlayer->WndProc(hWnd, message, wParam, lParam);
+}

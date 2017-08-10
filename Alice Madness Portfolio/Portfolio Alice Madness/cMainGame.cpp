@@ -124,6 +124,10 @@ void cMainGame::Render()
 
 void cMainGame::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	if (m_pWonderLand) {
+		g_pGameManager->WndProc(hWnd, message, wParam, lParam);
+		//m_pWonderLand->WndProc(hWnd, message, wParam, lParam);
+	}
 	//if (m_pCamera)
 	//g_pCamera->WndProc(hWnd, message, wParam, lParam);
 	//g_pCam->WndProc(hWnd, message, wParam, lParam);
