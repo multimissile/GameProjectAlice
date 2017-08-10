@@ -399,13 +399,13 @@ bool cSkinnedMesh::GetCurrentAnimationEnd(int nowState)
 	m_pAnimController->GetAnimationSet(nowState, &ani);
 	double maxTime = ani->GetPeriod();
 	m_pAnimController->GetTrackDesc(0, &pDesc);
-	double time=m_pAnimController->GetTime();
+	/*double time=m_pAnimController->GetTime();
 	int maxnumanimationouput = m_pAnimController->GetMaxNumAnimationOutputs();
 	int maxNumAnimationSets = m_pAnimController->GetMaxNumAnimationSets();
 	int maxNumEvents = m_pAnimController->GetMaxNumEvents();
 	int maxNumTracks = m_pAnimController->GetMaxNumTracks();
 	int NumAnimationSets = m_pAnimController->GetNumAnimationSets();
-	float priorityBlend=m_pAnimController->GetPriorityBlend();
+	float priorityBlend=m_pAnimController->GetPriorityBlend();*/
 
 
 
