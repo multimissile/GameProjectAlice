@@ -3,6 +3,8 @@
 #include "cAllocateHierarchy.h"
 
 
+
+
 cSkinnedMesh::cSkinnedMesh(char * szFolder, char * szFilename, float fScale)
 	: m_pRootFrame(NULL)
 	, m_pAnimController(NULL)
@@ -13,6 +15,9 @@ cSkinnedMesh::cSkinnedMesh(char * szFolder, char * szFilename, float fScale)
 	, m_fBlenedTime(0.f)
 	, m_fPassedBlendTime(0.f)
 	, m_fScale(fScale)
+	, m_iAttackNum(0)
+	, m_iCount(0)
+	, m_pAttackBone(NULL)
 {
 	cSkinnedMesh* pSkinnedMesh = g_pSkinnedMeshManager->GetSkinnedMesh(szFolder, szFilename);
 
@@ -35,6 +40,15 @@ cSkinnedMesh::cSkinnedMesh(char * szFolder, char * szFilename, float fScale)
 		pSkinnedMesh->m_pAnimController->GetMaxNumTracks(),
 		pSkinnedMesh->m_pAnimController->GetMaxNumEvents(),
 		&m_pAnimController);
+}
+
+void cSkinnedMesh::SetAttackBone(int AttackNum)
+{
+	m_iAttackNum = AttackNum;
+}
+
+ST_BONE* cSkinnedMesh::GetAttackBone() {
+	return m_pAttackBone;
 }
 
 cSkinnedMesh::cSkinnedMesh(char* szFolder, char* szFilename)
@@ -290,6 +304,13 @@ LPD3DXEFFECT cSkinnedMesh::LoadEffect( char* szFilename )
 
 void cSkinnedMesh::Update(ST_BONE* pCurrent, D3DXMATRIXA16* pmatParent )
 {
+	if (m_iAttackNum != 0) {
+		m_iCount++;
+		if (m_iCount == m_iAttackNum) {
+			m_pAttackBone = pCurrent;
+		}
+	}
+
 	pCurrent->CombinedTransformationMatrix = pCurrent->TransformationMatrix;
 	if(pmatParent)
 	{

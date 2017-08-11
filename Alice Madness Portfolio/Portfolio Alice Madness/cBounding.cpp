@@ -62,7 +62,63 @@ bool cBounding::CheckCollision(cBounding * pB, vector<cBounding*> vecPB)
 
 bool cBounding::IntersectSphereBox(cBoundingSphere * pBSphere, cBoundingBox * pBBox)
 {
-	return false;
+	//구와 박스의 충돌을 검사한다.
+
+	//중심점에서 
+
+	D3DXPLANE stPlane[6];
+
+	D3DXVECTOR3 v[3];
+	//앞면
+	v[0] = pBBox->m_vCenterPos - pBBox->m_fAxisHalfLen[2] * pBBox->m_vAxisDir[2];
+	v[1] = v[0] + pBBox->m_vAxisDir[1];
+	v[2] = v[0] + pBBox->m_vAxisDir[0];
+
+	D3DXPlaneFromPoints(&stPlane[0], &v[0], &v[1], &v[2]);
+
+	//뒷면
+	v[0] = pBBox->m_vCenterPos + pBBox->m_fAxisHalfLen[2] * pBBox->m_vAxisDir[2];
+	v[1] = v[0] + pBBox->m_vAxisDir[1];
+	v[2] = v[0] - pBBox->m_vAxisDir[0];
+
+	D3DXPlaneFromPoints(&stPlane[1], &v[0], &v[1], &v[2]);
+
+	//왼쪽
+	v[0] = pBBox->m_vCenterPos - pBBox->m_fAxisHalfLen[0] * pBBox->m_vAxisDir[0];
+	v[1] = v[0] + pBBox->m_vAxisDir[1];
+	v[2] = v[0] - pBBox->m_vAxisDir[2];
+
+	D3DXPlaneFromPoints(&stPlane[2], &v[0], &v[1], &v[2]);
+
+	//오른쪽
+	v[0] = pBBox->m_vCenterPos + pBBox->m_fAxisHalfLen[0] * pBBox->m_vAxisDir[0];
+	v[1] = v[0] + pBBox->m_vAxisDir[1];
+	v[2] = v[0] + pBBox->m_vAxisDir[2];
+
+	D3DXPlaneFromPoints(&stPlane[3], &v[0], &v[1], &v[2]);
+
+	//윗쪽
+	v[0] = pBBox->m_vCenterPos + pBBox->m_fAxisHalfLen[1] * pBBox->m_vAxisDir[1];
+	v[1] = v[0] + pBBox->m_vAxisDir[2];
+	v[2] = v[0] + pBBox->m_vAxisDir[0];
+
+
+	D3DXPlaneFromPoints(&stPlane[4], &v[0], &v[1], &v[2]);
+
+	//윗쪽
+	v[0] = pBBox->m_vCenterPos - pBBox->m_fAxisHalfLen[1] * pBBox->m_vAxisDir[1];
+	v[1] = v[0] - pBBox->m_vAxisDir[2];
+	v[2] = v[0] + pBBox->m_vAxisDir[0];
+
+	D3DXPlaneFromPoints(&stPlane[5], &v[0], &v[1], &v[2]);
+
+	for (int n = 0; n < _countof(stPlane); n++)
+	{
+		//내적한 값이 한면이라도 반지름보다 크면 
+		if (D3DXPlaneDotCoord(&stPlane[n], &pBSphere->m_vCenterPos) > pBSphere->m_fRadius)
+			return false;
+	}
+	return true;
 }
 
 bool cBounding::IntersectSphereSphere(cBoundingSphere * pBSphere1, cBoundingSphere * pBSphere2)

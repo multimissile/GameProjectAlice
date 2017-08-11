@@ -65,5 +65,7 @@ public:
 	virtual D3DXVECTOR3& GetPosition();
 	void ChangeState(CHARACTER_STATE ALICE_STATE);
 	void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
+	cBounding * GetAttackBound();
 };
 

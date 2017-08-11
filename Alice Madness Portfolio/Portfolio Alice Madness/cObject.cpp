@@ -23,6 +23,7 @@ cBounding * cObject::GetBounding()
 {
 	return m_pBounding;
 }
+
 void cObject::Destroy()
 {
 	SAFE_DELETE(m_pBounding);

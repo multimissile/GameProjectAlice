@@ -1,10 +1,12 @@
 #include "stdafx.h"
 #include "cPlayer.h"
+#include "cAllocateHierarchy.h"
 //#include "iMap.h"
 //#include "cCamera.h"
 
 //바운딩박스로 추가
 #include "cBoundingBox.h"
+#include "cBoundingSphere.h"
 
 #define FLOAT_JUMPSTR 1.75
 #define FLOAT_GRAVITY 0.1
@@ -171,21 +173,34 @@ void cPlayer::Setup(char * szFolder, char * szFile, float fScale)
 	m_pSkinnedMesh = new cSkinnedMesh(szFolder, szFile, fScale);
 	m_pSkinnedMesh->SetAnimationIndexBlend(state);
 
+	//앨리스 나이프 본으로 지정
+	m_pSkinnedMesh->SetAttackBone(4);
+
 	cBoundingBox* pB = new cBoundingBox;
 	pB->Setup(m_pSkinnedMesh->GetMax(), m_pSkinnedMesh->GetMin());
 	m_pBounding = pB;
-
-	cBoundingBox* pB2 = new cBoundingBox;
-	pB2->Setup(m_pSkinnedMesh->GetMax(), m_pSkinnedMesh->GetMin());
-	D3DXVECTOR3 testvec1 = m_pSkinnedMesh->GetMax();
-	D3DXVECTOR3 testvec2 = m_pSkinnedMesh->GetMin();
-	m_pAttackBound = pB2;
-
-
 }
 
 void cPlayer::Update()
 {
+	//공격 바운딩박스
+	ST_BONE* pBone = m_pSkinnedMesh->GetAttackBone();
+	if (pBone != NULL) {
+		/*cBoundingSphere* pS = new cBoundingSphere;
+		pS->Setup(
+			D3DXVECTOR3(pBone->TransformationMatrix._41, pBone->TransformationMatrix._42, pBone->TransformationMatrix._43),
+			D3DXVECTOR3(pBone->TransformationMatrix._41 + 10.0, pBone->TransformationMatrix._42 + 10.0, pBone->TransformationMatrix._43 + 10.0)
+		);*/
+		/*cBoundingBox* pB = new cBoundingBox;
+		pBone->CombinedTransformationMatrix(4, 4);
+		pB->Setup(
+			D3DXVECTOR3(pBone->TransformationMatrix._41, pBone->TransformationMatrix._42, pBone->TransformationMatrix._43),
+			D3DXVECTOR3(pBone->TransformationMatrix._41+0.5, pBone->TransformationMatrix._42+0.5, pBone->TransformationMatrix._43+0.5));*/
+		//m_pAttackBound = pS;
+	}
+	
+	//------------------------------------------------------------
+
 	//선회용으로 필요
 	D3DXMATRIXA16 matR, matT;
 
@@ -436,5 +451,10 @@ void cPlayer::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 	}
+}
+
+cBounding * cPlayer::GetAttackBound()
+{
+	return m_pAttackBound;
 }
 

@@ -8,6 +8,10 @@ class cSkinnedMesh
 
 private:
 	ST_BONE*					m_pRootFrame;			
+	ST_BONE*					m_pAttackBone;
+	int							m_iAttackNum;
+	int							m_iCount;
+
 	DWORD						m_dwWorkingPaletteSize;
 	D3DXMATRIX*					m_pmWorkingPalette;
 	LPD3DXEFFECT				m_pEffect;
@@ -31,6 +35,9 @@ public:
 	inline D3DXVECTOR3 GetMax() { return *D3DXVec3Scale(&D3DXVECTOR3(), &m_vMax, m_fScale); }
 
 	void SetScale(float fScale) { m_fScale = fScale; } // 앨리스 소인화나 거인화 이외에는 쓰지 않는다.
+
+	void SetAttackBone(int AttackNum);//공격 적용되는 본 숫자 지정
+	ST_BONE* cSkinnedMesh::GetAttackBone();
 
 public:
 	cSkinnedMesh(char* szFolder, char* szFilename, float fScale);

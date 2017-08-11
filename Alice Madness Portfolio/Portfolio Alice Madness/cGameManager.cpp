@@ -147,6 +147,7 @@ void cGameManager::Render()
 		}
 
 		m_pPlayer->GetBounding()->OBBBox_Render();
+		m_pPlayer->GetAttackBound()->OBBBox_Render();
 		//m_pRootItem->GetBounding()->OBBBox_Render();
 		for (int n = 0; n < m_vecItemObject.size(); n++)
 		{
