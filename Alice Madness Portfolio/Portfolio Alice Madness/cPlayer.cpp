@@ -10,7 +10,7 @@
 #define FLOAT_GRAVITY 0.1
 #define FLOAT_MOVESPEED 0.2f
 
-cPlayer::cPlayer() :state(CHARACTER_Idle)//, m_pCamera(NULL)
+cPlayer::cPlayer() :state(CHARACTER_Idle), m_pAttackBound(NULL)//, m_pCamera(NULL)
 {
 	m_fRotationY = 0.0f;
 	m_pSkinnedMesh = NULL;
@@ -28,6 +28,7 @@ cPlayer::cPlayer() :state(CHARACTER_Idle)//, m_pCamera(NULL)
 
 cPlayer::~cPlayer()
 {
+	SAFE_DELETE(m_pAttackBound);
 	SAFE_DELETE(m_pSkinnedMesh);
 }
 
@@ -174,6 +175,12 @@ void cPlayer::Setup(char * szFolder, char * szFile, float fScale)
 	pB->Setup(m_pSkinnedMesh->GetMax(), m_pSkinnedMesh->GetMin());
 	m_pBounding = pB;
 
+	cBoundingBox* pB2 = new cBoundingBox;
+	pB2->Setup(m_pSkinnedMesh->GetMax(), m_pSkinnedMesh->GetMin());
+	D3DXVECTOR3 testvec1 = m_pSkinnedMesh->GetMax();
+	D3DXVECTOR3 testvec2 = m_pSkinnedMesh->GetMin();
+	m_pAttackBound = pB2;
+
 
 }
 
@@ -192,7 +199,7 @@ void cPlayer::Update()
 
 	//>>:카메라 전역으로 수정
 	//카메라 돌면 캐릭터도 돌게 설정
-	D3DXVECTOR3 CameraDir = this->GetPosition() - g_pCamera->vGetEye();
+	D3DXVECTOR3 CameraDir = this->GetPosition() - *g_pCam->GetEye();
 	CameraDir.y = 0.0f;
 	D3DXVec3Normalize(&CameraDir, &CameraDir);
 
@@ -418,12 +425,14 @@ void cPlayer::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_LBUTTONDOWN:
 	{
-		isAttack = true;
-		//ChangeState(CHARACTER_attack1);
-		//ChangeState(CHARACTER_attack1f);
-		ChangeState(CHARACTER_attack2);
-		//ChangeState(CHARACTER_attack2f);
-		//ChangeState(CHARACTER_attack3);		
+		if (!isJump) {
+			isAttack = true;
+			//ChangeState(CHARACTER_attack1);
+			//ChangeState(CHARACTER_attack1f);
+			ChangeState(CHARACTER_attack2);
+			//ChangeState(CHARACTER_attack2f);
+			//ChangeState(CHARACTER_attack3);
+		}
 		break;
 	}
 	}

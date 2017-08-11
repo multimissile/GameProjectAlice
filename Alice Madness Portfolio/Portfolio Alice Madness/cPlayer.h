@@ -51,7 +51,7 @@ private:
 	CHARACTER_STATE state;
 	//cCamera* m_pCamera;
 
-
+	cBounding* m_pAttackBound;
 
 public:
 	//void Setup();
