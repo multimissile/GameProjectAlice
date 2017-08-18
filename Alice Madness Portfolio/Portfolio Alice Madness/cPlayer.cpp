@@ -249,7 +249,7 @@ void cPlayer::Update()
 	}
 	case dir9: {
 		vDirection = (CameraDir + v90) / 2;
-		D3DXVec3TransformCoord(&vDirection, &CameraDir, &matR);
+		//D3DXVec3TransformCoord(&vDirection, &CameraDir, &matR);
 		break;
 	}
 	case dir4: {
