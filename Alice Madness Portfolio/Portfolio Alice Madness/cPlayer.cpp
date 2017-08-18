@@ -179,25 +179,39 @@ void cPlayer::Setup(char * szFolder, char * szFile, float fScale)
 	cBoundingBox* pB = new cBoundingBox;
 	pB->Setup(m_pSkinnedMesh->GetMax(), m_pSkinnedMesh->GetMin());
 	m_pBounding = pB;
+
+	/*cBoundingBox* pS = new cBoundingBox;
+	D3DXMATRIX* pWorkPalette =  m_pSkinnedMesh->GetWorkPalette();
+	pS->Setup(
+		D3DXVECTOR3(pWorkPalette->_41, pWorkPalette->_42, pWorkPalette->_43),
+		D3DXVECTOR3(pWorkPalette->_41 + 10.0, pWorkPalette->_42 + 10.0, pWorkPalette->_43 + 10.0)
+	);*/
+	/*ST_BONE* pBone = m_pSkinnedMesh->GetAttackBone();
+	pS->Setup(
+		D3DXVECTOR3(pBone->TransformationMatrix._41, pBone->TransformationMatrix._42, pBone->TransformationMatrix._43),
+		D3DXVECTOR3(pBone->TransformationMatrix._41 + 10.0, pBone->TransformationMatrix._42 + 10.0, pBone->TransformationMatrix._43 + 10.0)
+	);*/
+	//m_pAttackBound = pS;
+	cBoundingSphere* pBS = new cBoundingSphere;
+	pBS->Setup(D3DXVECTOR3(10, 10, 10), D3DXVECTOR3(-10, -10, -10));
+	m_pAttackBound = pBS;
 }
 
 void cPlayer::Update()
 {
-	//공격 바운딩박스
-	ST_BONE* pBone = m_pSkinnedMesh->GetAttackBone();
-	if (pBone != NULL) {
-		/*cBoundingSphere* pS = new cBoundingSphere;
-		pS->Setup(
-			D3DXVECTOR3(pBone->TransformationMatrix._41, pBone->TransformationMatrix._42, pBone->TransformationMatrix._43),
-			D3DXVECTOR3(pBone->TransformationMatrix._41 + 10.0, pBone->TransformationMatrix._42 + 10.0, pBone->TransformationMatrix._43 + 10.0)
-		);*/
-		/*cBoundingBox* pB = new cBoundingBox;
-		pBone->CombinedTransformationMatrix(4, 4);
-		pB->Setup(
-			D3DXVECTOR3(pBone->TransformationMatrix._41, pBone->TransformationMatrix._42, pBone->TransformationMatrix._43),
-			D3DXVECTOR3(pBone->TransformationMatrix._41+0.5, pBone->TransformationMatrix._42+0.5, pBone->TransformationMatrix._43+0.5));*/
-		//m_pAttackBound = pS;
+	//공격 바운딩박스 뼈 이용시
+	/*ST_BONE* pBone = m_pSkinnedMesh->GetAttackBone();
+	if (pBone != NULL && m_pAttackBound != NULL) {
+		D3DXMATRIX* matRT;
+		matRT = &pBone->TransformationMatrix;
+		m_pAttackBound->Update(matRT);
+	}*/
+	if (m_pAttackBound != NULL) {
+		D3DXMATRIX* matRT;
+		matRT = m_pSkinnedMesh->GetWorkPalette();
+		m_pAttackBound->Update(matRT);
 	}
+	
 	
 	//------------------------------------------------------------
 
@@ -214,10 +228,14 @@ void cPlayer::Update()
 
 	//>>:카메라 전역으로 수정
 	//카메라 돌면 캐릭터도 돌게 설정
+
+	D3DXVECTOR3 vUp = D3DXVECTOR3(0, 1, 0);
 	D3DXVECTOR3 CameraDir = this->GetPosition() - *g_pCam->GetEye();
 	CameraDir.y = 0.0f;
 	D3DXVec3Normalize(&CameraDir, &CameraDir);
 
+	D3DXVECTOR3 v90;
+	D3DXVec3Cross(&v90, &vUp, &CameraDir);
 	D3DXVECTOR3 vDirection;
 
 	switch (CHAR_DIR) {
@@ -226,64 +244,51 @@ void cPlayer::Update()
 		break;
 	}
 	case dir7: {
-		D3DXMatrixRotationY(&matR, -45);
-		D3DXVec3TransformCoord(&vDirection, &CameraDir, &matR);
+		vDirection = (CameraDir - v90)/2;
 		break;
 	}
 	case dir9: {
-		D3DXMatrixRotationY(&matR, 45);
+		vDirection = (CameraDir + v90) / 2;
 		D3DXVec3TransformCoord(&vDirection, &CameraDir, &matR);
 		break;
 	}
 	case dir4: {
-		vDirection = CameraDir;
+		vDirection = -v90;
 		break;
 	}
 	case dir1: {
-		D3DXMatrixRotationY(&matR, 41.5);
-		D3DXVec3TransformNormal(&vDirection, &CameraDir, &matR);
+		vDirection = (-CameraDir - v90) / 2;
 		break;
 	}
 	case dir3: {
-		D3DXMatrixRotationY(&matR, -41.5);
-		D3DXVec3TransformNormal(&vDirection, &CameraDir, &matR);
+		vDirection = (-CameraDir + v90) / 2;
 		break;
 	}
 	case dir6: {
-		vDirection = CameraDir;
+		vDirection = v90;
 		break;
 	}
 	case dir2: {
-		D3DXMatrixRotationY(&matR, 41);
-		D3DXVec3TransformNormal(&vDirection, &CameraDir, &matR);
+		vDirection = -CameraDir;
 		break;
 	}
 	}
 	
+	D3DXVECTOR3 vLDir;
+	D3DXVec3Cross(&vLDir, &vUp, &vDirection);
+
+	D3DXVECTOR3 vRDir = -vLDir;
+
+	float fDotL = D3DXVec3Dot(&vLDir, &m_vDirection);
+	float fDotR = D3DXVec3Dot(&vRDir, &m_vDirection);
+
 	
-
-	D3DXMatrixRotationY(&matR, 90);
-	D3DXVECTOR3 LCameraDir;
-	//D3DXVec3TransformNormal(&LCameraDir, &CameraDir, &matR);
-	D3DXVec3TransformNormal(&LCameraDir, &vDirection, &matR);
-
-	D3DXMatrixRotationY(&matR, -90);
-	D3DXVECTOR3 RCameraDir;
-	//D3DXVec3TransformNormal(&RCameraDir, &CameraDir, &matR);
-	D3DXVec3TransformNormal(&RCameraDir, &vDirection, &matR);
-
-	D3DXMatrixRotationY(&matR, 80);
-	D3DXVECTOR3 Direction90;
-	D3DXVec3TransformNormal(&Direction90, &vDirection, &matR);
-
-	float fDotL = D3DXVec3Dot(&LCameraDir, &m_vDirection);
-	float fDotR = D3DXVec3Dot(&RCameraDir, &m_vDirection);
 
 	/*LDirection = (LCameraDir + LDirection) / 2;
 	RDirection = (RCameraDir + RDirection) / 2;*/
 
 	if (abs(fDotL - fDotR) > 0.1f) {
-		if (fDotL <= fDotR) {
+		if (fDotL < fDotR) {
 			m_fRotationY += 0.05f;
 		}
 		else {
@@ -325,8 +330,7 @@ void cPlayer::Update()
 		}
 	}
 	//움직임 테스트와 키 테스트
-	else if (g_pKeyManager->IsStayKeyDown('W'))
-	{
+	else {
 		float fSpeed;
 		if (isDash) {
 			if (fRunSpeed < FLOAT_MOVESPEED * 2) {
@@ -340,81 +344,73 @@ void cPlayer::Update()
 			fSpeed = FLOAT_MOVESPEED;
 			st = CHARACTER_Alice_Walk;
 		}
-
-		if (g_pKeyManager->IsStayKeyDown('A')) {
-			CHAR_DIR = dir7;
-		}
-		else  if (g_pKeyManager->IsStayKeyDown('D')) {
-			CHAR_DIR = dir9;
-		}
-		else {
-			CHAR_DIR = dir8;
-		}
-		ChangeState(st);
-		vPosition += vDirection * fSpeed;
-
-
-
-		////최대 애니메이션으로 가면 다음으로 넘긴다.
-		////애니메이션 끝나면 
-		//if(m_pSkinnedMesh->GetCurrentAnimationEnd())
-		//	m_pSkinnedMesh->SetAnimationIndexBlend(28);
-
-
-	}
-	else if (g_pKeyManager->IsStayKeyDown('S'))
-	{
-		float fSpeed;
-		if (isDash) {
-			if (fRunSpeed < FLOAT_MOVESPEED * 2) {
-				fRunSpeed += 0.01f;
+		if (g_pKeyManager->IsStayKeyDown('W'))
+		{
+			if (g_pKeyManager->IsStayKeyDown('A')) {
+				CHAR_DIR = dir7;
 			}
-			fSpeed = fRunSpeed;
-			st = CHARACTER_Run;
-		}
-		else {
-			fRunSpeed = 0.2f;
-			fSpeed = FLOAT_MOVESPEED;
-			st = CHARACTER_Alice_Walk;
-		}
+			else  if (g_pKeyManager->IsStayKeyDown('D')) {
+				CHAR_DIR = dir9;
+			}
+			else {
+				CHAR_DIR = dir8;
+			}
+			vPosition += vDirection * fSpeed;
 
-		if (g_pKeyManager->IsStayKeyDown('A')) {
-			CHAR_DIR = dir1;
+
+
+			////최대 애니메이션으로 가면 다음으로 넘긴다.
+			////애니메이션 끝나면 
+			//if(m_pSkinnedMesh->GetCurrentAnimationEnd())
+			//	m_pSkinnedMesh->SetAnimationIndexBlend(28);
+
+
 		}
-		else  if (g_pKeyManager->IsStayKeyDown('D')) {
-			CHAR_DIR = dir3;
+		else if (g_pKeyManager->IsStayKeyDown('S'))
+		{
+			if (g_pKeyManager->IsStayKeyDown('A')) {
+				CHAR_DIR = dir1;
+			}
+			else  if (g_pKeyManager->IsStayKeyDown('D')) {
+				CHAR_DIR = dir3;
+			}
+			else {
+				CHAR_DIR = dir2;
+			}
+			vPosition += vDirection * fSpeed;
 		}
-		else {
-			CHAR_DIR = dir2;
+		else if (g_pKeyManager->IsStayKeyDown('A'))
+		{
+			CHAR_DIR = dir4;
+			vPosition += vDirection * fSpeed;
 		}
-		ChangeState(st);
-		vPosition += vDirection * fSpeed;
-	}
-	else if (g_pKeyManager->IsStayKeyDown('A'))
-	{
-		st = CHARACTER_cStarfL;
-		CHAR_DIR = dir4;
-		vPosition += Direction90 * FLOAT_MOVESPEED;
-	}
-	else if (g_pKeyManager->IsStayKeyDown('D'))
-	{
-		st = CHARACTER_cStartfR;
-		CHAR_DIR = dir6;
-		vPosition -= Direction90 * FLOAT_MOVESPEED;
-	}
-	/*else if (g_pKeyManager->IsStayKeyDown('S'))
-	{
-		st = (CHARACTER_STATE)10;
-		vPosition -= m_vDirection * FLOAT_MOVESPEED;
-	}
-	*/
-	else if (state != CHARACTER_Idle)
-	{
-		//state = CHARACTER_Idle;
-		//트랙포지션이 0 부터 시작해야하므로 SetAnimationIndexBlend 를 사용하여 트랙포지션을 0으로 만듦과 동시에
-		// 이전 애니메이션에서 현재애니메이션으로 넘어오는것이 어색하지 않도록 blend
-		//m_pSkinnedMesh->SetAnimationIndexBlend(state);
-		st = CHARACTER_Idle;
+		else if (g_pKeyManager->IsStayKeyDown('D'))
+		{
+			CHAR_DIR = dir6;
+			vPosition += vDirection * fSpeed;
+		}
+		/*else if (g_pKeyManager->IsStayKeyDown('S'))
+		{
+			st = (CHARACTER_STATE)10;
+			vPosition -= m_vDirection * FLOAT_MOVESPEED;
+		}
+		*/
+		else 
+		{
+			//state = CHARACTER_Idle;
+			//트랙포지션이 0 부터 시작해야하므로 SetAnimationIndexBlend 를 사용하여 트랙포지션을 0으로 만듦과 동시에
+			// 이전 애니메이션에서 현재애니메이션으로 넘어오는것이 어색하지 않도록 blend
+			//m_pSkinnedMesh->SetAnimationIndexBlend(state);
+			st = CHARACTER_Idle;
+		}
+		/*else if (state != CHARACTER_Idle)
+		{
+			//state = CHARACTER_Idle;
+			//트랙포지션이 0 부터 시작해야하므로 SetAnimationIndexBlend 를 사용하여 트랙포지션을 0으로 만듦과 동시에
+			// 이전 애니메이션에서 현재애니메이션으로 넘어오는것이 어색하지 않도록 blend
+			//m_pSkinnedMesh->SetAnimationIndexBlend(state);
+			st = CHARACTER_Idle;
+		}*/
 	}
 
 	//점프 부분

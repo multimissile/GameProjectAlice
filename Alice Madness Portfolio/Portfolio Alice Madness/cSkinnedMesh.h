@@ -66,6 +66,10 @@ public:
 	void SetAnimationIndex(int nIndex);		
 	void SetAnimationIndexBlend(int nIndex);
 	bool GetCurrentAnimationEnd(int nowState);
+
+	D3DXMATRIX* GetWorkPalette() {
+		return &m_pmWorkingPalette[0];
+	}
 	
 //Enemy 에서 사용한 함수 추가
 	LPD3DXANIMATIONCONTROLLER& GetAniController() { return m_pAnimController; }
