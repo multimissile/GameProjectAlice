@@ -12,7 +12,7 @@
 #define FLOAT_GRAVITY 0.1
 #define FLOAT_MOVESPEED 0.2f
 
-cPlayer::cPlayer() :state(CHARACTER_Idle), m_pAttackBound(NULL)//, m_pCamera(NULL)
+cPlayer::cPlayer() :state(CHARACTER_Idle), m_pAttackBound(NULL), CHAR_DIR(dir8)//, m_pCamera(NULL)
 {
 	m_fRotationY = 0.0f;
 	m_pSkinnedMesh = NULL;
@@ -218,17 +218,63 @@ void cPlayer::Update()
 	CameraDir.y = 0.0f;
 	D3DXVec3Normalize(&CameraDir, &CameraDir);
 
+	D3DXVECTOR3 vDirection;
+
+	switch (CHAR_DIR) {
+	case dir8: {
+		vDirection = CameraDir;
+		break;
+	}
+	case dir7: {
+		D3DXMatrixRotationY(&matR, -45);
+		D3DXVec3TransformCoord(&vDirection, &CameraDir, &matR);
+		break;
+	}
+	case dir9: {
+		D3DXMatrixRotationY(&matR, 45);
+		D3DXVec3TransformCoord(&vDirection, &CameraDir, &matR);
+		break;
+	}
+	case dir4: {
+		vDirection = CameraDir;
+		break;
+	}
+	case dir1: {
+		D3DXMatrixRotationY(&matR, 41.5);
+		D3DXVec3TransformNormal(&vDirection, &CameraDir, &matR);
+		break;
+	}
+	case dir3: {
+		D3DXMatrixRotationY(&matR, -41.5);
+		D3DXVec3TransformNormal(&vDirection, &CameraDir, &matR);
+		break;
+	}
+	case dir6: {
+		vDirection = CameraDir;
+		break;
+	}
+	case dir2: {
+		D3DXMatrixRotationY(&matR, 41);
+		D3DXVec3TransformNormal(&vDirection, &CameraDir, &matR);
+		break;
+	}
+	}
+	
+	
+
 	D3DXMatrixRotationY(&matR, 90);
 	D3DXVECTOR3 LCameraDir;
-	D3DXVec3TransformNormal(&LCameraDir, &CameraDir, &matR);
+	//D3DXVec3TransformNormal(&LCameraDir, &CameraDir, &matR);
+	D3DXVec3TransformNormal(&LCameraDir, &vDirection, &matR);
 
 	D3DXMatrixRotationY(&matR, -90);
 	D3DXVECTOR3 RCameraDir;
-	D3DXVec3TransformNormal(&RCameraDir, &CameraDir, &matR);
+	//D3DXVec3TransformNormal(&RCameraDir, &CameraDir, &matR);
+	D3DXVec3TransformNormal(&RCameraDir, &vDirection, &matR);
 
 	D3DXMatrixRotationY(&matR, 80);
 	D3DXVECTOR3 Direction90;
-	D3DXVec3TransformNormal(&Direction90, &m_vDirection, &matR);
+	D3DXVec3TransformNormal(&Direction90, &vDirection, &matR);
 
 	float fDotL = D3DXVec3Dot(&LCameraDir, &m_vDirection);
 	float fDotR = D3DXVec3Dot(&RCameraDir, &m_vDirection);
@@ -236,14 +282,15 @@ void cPlayer::Update()
 	/*LDirection = (LCameraDir + LDirection) / 2;
 	RDirection = (RCameraDir + RDirection) / 2;*/
 
-	if (abs(fDotL - fDotR) > 0.2f) {
+	if (abs(fDotL - fDotR) > 0.1f) {
 		if (fDotL <= fDotR) {
-			m_fRotationY += 0.1f;
+			m_fRotationY += 0.05f;
 		}
 		else {
-			m_fRotationY -= 0.1f;
+			m_fRotationY -= 0.05f;
 		}
 	}
+
 
 	if (g_pKeyManager->IsOnceKeyDown(VK_SHIFT)) {
 		isDash = true;
@@ -277,17 +324,6 @@ void cPlayer::Update()
 			}
 		}
 	}
-	else if (g_pKeyManager->IsStayKeyDown('A'))
-	{
-		st = CHARACTER_cStarfL;
-		vPosition += Direction90 * FLOAT_MOVESPEED;
-	}
-	else if (g_pKeyManager->IsStayKeyDown('D'))
-	{
-		st = CHARACTER_cStartfR;
-		vPosition -= Direction90 * FLOAT_MOVESPEED;
-	}
-
 	//움직임 테스트와 키 테스트
 	else if (g_pKeyManager->IsStayKeyDown('W'))
 	{
@@ -304,8 +340,18 @@ void cPlayer::Update()
 			fSpeed = FLOAT_MOVESPEED;
 			st = CHARACTER_Alice_Walk;
 		}
+
+		if (g_pKeyManager->IsStayKeyDown('A')) {
+			CHAR_DIR = dir7;
+		}
+		else  if (g_pKeyManager->IsStayKeyDown('D')) {
+			CHAR_DIR = dir9;
+		}
+		else {
+			CHAR_DIR = dir8;
+		}
 		ChangeState(st);
-		vPosition += m_vDirection * fSpeed;
+		vPosition += vDirection * fSpeed;
 
 
 
@@ -316,13 +362,52 @@ void cPlayer::Update()
 
 
 	}
-
 	else if (g_pKeyManager->IsStayKeyDown('S'))
+	{
+		float fSpeed;
+		if (isDash) {
+			if (fRunSpeed < FLOAT_MOVESPEED * 2) {
+				fRunSpeed += 0.01f;
+			}
+			fSpeed = fRunSpeed;
+			st = CHARACTER_Run;
+		}
+		else {
+			fRunSpeed = 0.2f;
+			fSpeed = FLOAT_MOVESPEED;
+			st = CHARACTER_Alice_Walk;
+		}
+
+		if (g_pKeyManager->IsStayKeyDown('A')) {
+			CHAR_DIR = dir1;
+		}
+		else  if (g_pKeyManager->IsStayKeyDown('D')) {
+			CHAR_DIR = dir3;
+		}
+		else {
+			CHAR_DIR = dir2;
+		}
+		ChangeState(st);
+		vPosition += vDirection * fSpeed;
+	}
+	else if (g_pKeyManager->IsStayKeyDown('A'))
+	{
+		st = CHARACTER_cStarfL;
+		CHAR_DIR = dir4;
+		vPosition += Direction90 * FLOAT_MOVESPEED;
+	}
+	else if (g_pKeyManager->IsStayKeyDown('D'))
+	{
+		st = CHARACTER_cStartfR;
+		CHAR_DIR = dir6;
+		vPosition -= Direction90 * FLOAT_MOVESPEED;
+	}
+	/*else if (g_pKeyManager->IsStayKeyDown('S'))
 	{
 		st = (CHARACTER_STATE)10;
 		vPosition -= m_vDirection * FLOAT_MOVESPEED;
 	}
-
+	*/
 	else if (state != CHARACTER_Idle)
 	{
 		//state = CHARACTER_Idle;

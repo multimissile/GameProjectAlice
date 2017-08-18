@@ -3,6 +3,16 @@
 
 class cSkinnedMesh;
 class cCamera;
+enum CHARACTER_DIR {
+	dir8,
+	dir7,
+	dir9,
+	dir1,
+	dir2,
+	dir3,
+	dir4,
+	dir6
+};
 
 enum CHARACTER_STATE
 {
@@ -42,6 +52,7 @@ public:
 	~cPlayer();
 
 private:
+	CHARACTER_DIR CHAR_DIR;
 	bool isAttack;
 	bool isDash;
 	bool isJump;
