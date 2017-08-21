@@ -16,8 +16,8 @@ cSkinnedMesh::cSkinnedMesh(char * szFolder, char * szFilename, float fScale)
 	, m_fPassedBlendTime(0.f)
 	, m_fScale(fScale)
 	, m_iAttackNum(0)
-	, m_iCount(0)
-	, m_pAttackBone(NULL)
+	//, m_iCount(0)
+	// , m_pAttackBone(NULL)
 {
 	cSkinnedMesh* pSkinnedMesh = g_pSkinnedMeshManager->GetSkinnedMesh(szFolder, szFilename);
 
@@ -47,9 +47,9 @@ void cSkinnedMesh::SetAttackBone(int AttackNum)
 	m_iAttackNum = AttackNum;
 }
 
-ST_BONE* cSkinnedMesh::GetAttackBone() {
+/*ST_BONE* cSkinnedMesh::GetAttackBone() {
 	return m_pAttackBone;
-}
+}*/
 
 cSkinnedMesh::cSkinnedMesh(char* szFolder, char* szFilename)
 	: m_pRootFrame(NULL)
@@ -304,12 +304,12 @@ LPD3DXEFFECT cSkinnedMesh::LoadEffect( char* szFilename )
 
 void cSkinnedMesh::Update(ST_BONE* pCurrent, D3DXMATRIXA16* pmatParent )
 {
-	if (m_iAttackNum != 0) {
+	/*if (m_iAttackNum != 0) {
 		m_iCount++;
 		if (m_iCount == m_iAttackNum) {
 			m_pAttackBone = pCurrent;
 		}
-	}
+	}*/
 
 	pCurrent->CombinedTransformationMatrix = pCurrent->TransformationMatrix;
 	if(pmatParent)

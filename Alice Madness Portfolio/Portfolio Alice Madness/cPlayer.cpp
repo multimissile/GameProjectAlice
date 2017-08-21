@@ -174,7 +174,7 @@ void cPlayer::Setup(char * szFolder, char * szFile, float fScale)
 	m_pSkinnedMesh->SetAnimationIndexBlend(state);
 
 	//앨리스 나이프 본으로 지정
-	m_pSkinnedMesh->SetAttackBone(4);
+	m_pSkinnedMesh->SetAttackBone(0);
 
 	cBoundingBox* pB = new cBoundingBox;
 	pB->Setup(m_pSkinnedMesh->GetMax(), m_pSkinnedMesh->GetMin());
